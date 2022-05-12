@@ -5,7 +5,7 @@ using System.Text;
 
 namespace myPortfolio.Stores
 {
-    public class NavigationStore
+    public class Navigation
     {
 
         public event Action CurrentViewModelChanged;

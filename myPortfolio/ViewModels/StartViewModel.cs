@@ -27,9 +27,9 @@ namespace myPortfolio.ViewModels
 
         public ICommand LogInCommand { get; }
 
-        public StartViewModel(NavigationStore navigationStore)
+        public StartViewModel(Navigation navigation)
         {
-            LogInCommand = new LogInCommand(this, navigationStore);
+            LogInCommand = new LogInCommand(this, navigation);
         }
 
     }

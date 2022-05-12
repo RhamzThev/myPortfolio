@@ -7,14 +7,14 @@ namespace myPortfolio.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        public NavigationStore _navigationStore;
+        public Navigation _navigation;
 
-        public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
+        public BaseViewModel CurrentViewModel => _navigation.CurrentViewModel;
 
-        public MainWindowViewModel(NavigationStore navigationStore)
+        public MainWindowViewModel(Navigation navigation)
         {
-            _navigationStore = navigationStore;
-            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+            _navigation = navigation;
+            _navigation.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
 
         private void OnCurrentViewModelChanged()

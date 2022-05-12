@@ -18,12 +18,12 @@ namespace myPortfolio
         protected override void OnStartup(StartupEventArgs e)
         {
 
-            NavigationStore navigationStore = new NavigationStore();
-            navigationStore.CurrentViewModel = new StartViewModel(navigationStore);
+            Navigation navigation = new Navigation();
+            navigation.CurrentViewModel = new StartViewModel(navigation);
 
             MainWindow = new MainWindow()
             {
-                DataContext = new MainWindowViewModel(navigationStore)
+                DataContext = new MainWindowViewModel(navigation)
             };
             MainWindow.Show();
 

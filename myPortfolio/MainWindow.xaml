@@ -6,7 +6,7 @@
         xmlns:Views="clr-namespace:myPortfolio.Views"
         xmlns:ViewModels="clr-namespace:myPortfolio.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="myPortfolio" Height="450" Width="800">
     <ContentControl Content="{Binding CurrentViewModel}">
         <ContentControl.Resources>
             <DataTemplate DataType="{x:Type ViewModels:StartViewModel}">

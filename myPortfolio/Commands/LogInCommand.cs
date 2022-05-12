@@ -12,14 +12,14 @@ namespace myPortfolio.Commands
     {
 
         private readonly StartViewModel _startViewModel;
-        private readonly NavigationStore _navigationStore;
+        private readonly Navigation _navigation;
 
-        public LogInCommand(StartViewModel startViewModel, NavigationStore navigationStore)
+        public LogInCommand(StartViewModel startViewModel, Navigation navigation)
         {
             _startViewModel = startViewModel;
             _startViewModel.PropertyChanged += OnPropertyChanged;
 
-            _navigationStore = navigationStore;
+            _navigation = navigation;
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -48,7 +48,7 @@ namespace myPortfolio.Commands
             // START A SESSION
 
             // GO TO MAIN PAGE
-            _navigationStore.CurrentViewModel = new HomeViewModel();
+            _navigation.CurrentViewModel = new HomeViewModel();
         }
     }
 }
