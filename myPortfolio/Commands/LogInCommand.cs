@@ -43,7 +43,7 @@ namespace myPortfolio.Commands
             string password = _startViewModel.Password;
 
             // LOG IN THE USER
-            User user = User.LogIn(username, password);
+            User.LogIn(username, password);
 
             // START A SESSION
 

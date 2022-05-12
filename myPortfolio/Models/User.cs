@@ -174,17 +174,22 @@ namespace myPortfolio.Models
             _user = user;
         }
 
-        public static User LogIn(string username, string password)
+        public static bool LogIn(string username, string password)
         {
             // IF VALID CREDENTIALS
             if (ValidCredentials(username, password))
             {
                 // RETURN USER WITH INFO
                 _user = ReadUserByUsername(username);
-                return _user;
+                return true;
             }
             // ELSE RETURN NULL
-            return null;
+            return false;
+        }
+
+        public static void SignInGuest()
+        {
+            GetInstance();
         }
 
     }
