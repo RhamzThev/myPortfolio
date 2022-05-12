@@ -14,8 +14,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="1">
-            <TextBlock Text="Signed in as: NULL"/>
-            <Button Content="Sign Out"/>
+            <TextBlock Text="{Binding Name}"/>
+            <Button Content="Sign Out" Command="{Binding SignOutCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

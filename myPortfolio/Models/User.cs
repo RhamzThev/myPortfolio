@@ -6,17 +6,35 @@ using Npgsql;
 
 namespace myPortfolio.Models
 {
-    class User
+    public class User
     {
 
-        private string Username { get; }
-        private string Name { get; }
+        private static User _user;
+
+        private static string _name;
+
+        public static string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        private static string _username;
+
+        public static string Username
+        {
+            get { return _username; }
+            set { _username = value; }
+        }
+
+
 
         private User(string name, string username)
         {
-            Username = username;
-            Name = name;
+            _username = username;
+            _name = name;
         }
+
 
 
         /*
@@ -138,9 +156,23 @@ namespace myPortfolio.Models
 
 
         /*
-         * BUSINESS LOGIC
+         * GET/SET INSTANCE + BUSINESS LOGIC
          */
 
+        public static User GetInstance()
+        {
+            if(_user == null)
+            {
+                _user = new User("Guest", "Guest");
+            }
+
+            return _user;
+        }
+
+        public static void SetInstance(User user)
+        {
+            _user = user;
+        }
 
         public static User LogIn(string username, string password)
         {
@@ -148,7 +180,8 @@ namespace myPortfolio.Models
             if (ValidCredentials(username, password))
             {
                 // RETURN USER WITH INFO
-                return ReadUserByUsername(username);
+                _user = ReadUserByUsername(username);
+                return _user;
             }
             // ELSE RETURN NULL
             return null;

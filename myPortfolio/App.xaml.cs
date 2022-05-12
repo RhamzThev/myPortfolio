@@ -1,4 +1,4 @@
-﻿using myPortfolio.Stores;
+﻿using myPortfolio.Services;
 using myPortfolio.ViewModels;
 using System;
 using System.Collections.Generic;

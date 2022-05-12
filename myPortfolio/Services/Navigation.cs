@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace myPortfolio.Stores
+namespace myPortfolio.Services
 {
     public class Navigation
     {

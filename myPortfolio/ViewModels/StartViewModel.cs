@@ -1,5 +1,5 @@
 ﻿using myPortfolio.Commands;
-using myPortfolio.Stores;
+using myPortfolio.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,10 +26,12 @@ namespace myPortfolio.ViewModels
         }
 
         public ICommand LogInCommand { get; }
+        public ICommand SignInGuestCommand { get; }
 
         public StartViewModel(Navigation navigation)
         {
             LogInCommand = new LogInCommand(this, navigation);
+            SignInGuestCommand = new SignInGuestCommand(navigation);
         }
 
     }

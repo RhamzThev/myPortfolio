@@ -1,5 +1,5 @@
 ﻿using myPortfolio.Models;
-using myPortfolio.Stores;
+using myPortfolio.Services;
 using myPortfolio.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -48,7 +48,7 @@ namespace myPortfolio.Commands
             // START A SESSION
 
             // GO TO MAIN PAGE
-            _navigation.CurrentViewModel = new HomeViewModel();
+            _navigation.CurrentViewModel = new HomeViewModel(_navigation);
         }
     }
 }

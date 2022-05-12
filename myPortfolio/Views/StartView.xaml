@@ -51,7 +51,7 @@
                 <Button Content="Sign Up"/>
                 
                 <!-- SIGN IN AS GUEST -->
-                <Button Content="Sign In As Guest"/>
+                <Button Content="Sign In As Guest" Command="{Binding SignInGuestCommand}"/>
             </StackPanel>
         </Grid>
     </Grid>
