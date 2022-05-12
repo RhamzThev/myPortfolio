@@ -1,4 +1,5 @@
 ﻿using myPortfolio.Commands;
+using myPortfolio.Stores;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +27,7 @@ namespace myPortfolio.ViewModels
 
         public ICommand LogInCommand { get; }
 
-        public StartViewModel(Stores.NavigationStore navigationStore)
+        public StartViewModel(NavigationStore navigationStore)
         {
             LogInCommand = new LogInCommand(this, navigationStore);
         }

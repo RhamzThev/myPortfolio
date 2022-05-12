@@ -1,4 +1,5 @@
-﻿using myPortfolio.ViewModels;
+﻿using myPortfolio.Stores;
+using myPortfolio.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,9 +18,12 @@ namespace myPortfolio
         protected override void OnStartup(StartupEventArgs e)
         {
 
+            NavigationStore navigationStore = new NavigationStore();
+            navigationStore.CurrentViewModel = new StartViewModel(navigationStore);
+
             MainWindow = new MainWindow()
             {
-                DataContext = new MainWindowViewModel()
+                DataContext = new MainWindowViewModel(navigationStore)
             };
             MainWindow.Show();
 
