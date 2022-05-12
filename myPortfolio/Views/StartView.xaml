@@ -31,11 +31,11 @@
                 
                 <!-- USERNAME -->
                 <TextBlock Text="Username"/>
-                <TextBox Text="{Binding Username}"/>
+                <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- PASSWORD -->
                 <TextBlock Text="Password"/>
-                <TextBox Text="{Binding Password}"/>
+                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
                 
                 <!-- LOG IN BUTTON -->
                 <Button Content="Log In" Command="{Binding LogInCommand}"/>

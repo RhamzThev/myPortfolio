@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 
 namespace myPortfolio.Commands
 {
@@ -55,12 +56,13 @@ namespace myPortfolio.Commands
             string repeatPassword = _signUpViewModel.RepeatPassword;
 
             // SIGN UP USER
-            User.SignUp(name, username, password, repeatPassword);
-
-            // START A SESSION
+            bool signedUp = User.SignUp(name, username, password, repeatPassword);
 
             // GO TO MAIN PAGE
-            _navigation.CurrentViewModel = new HomeViewModel(_navigation);
+            if (signedUp)
+            {
+                _navigation.CurrentViewModel = new HomeViewModel(_navigation);
+            }
         }
     }
 }

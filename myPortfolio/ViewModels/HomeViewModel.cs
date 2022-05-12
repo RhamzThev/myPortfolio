@@ -20,10 +20,12 @@ namespace myPortfolio.ViewModels
         }
 
         public ICommand SignOutCommand { get; }
+        public ICommand ProfileCommand { get; }
 
         public HomeViewModel(Navigation navigation)
         {
             SignOutCommand = new SignOutCommand(navigation);
+            ProfileCommand = new NavigateCommand(navigation, new ProfileViewModel(navigation));
         }
     }
 }

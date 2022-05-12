@@ -19,19 +19,19 @@
 
             <!-- NAME -->
             <TextBlock Text="Name"/>
-            <TextBox Text="{Binding Name}"/>
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- USERNAME -->
             <TextBlock Text="Username"/>
-            <TextBox Text="{Binding Username}"/>
+            <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- PASSWORD -->
             <TextBlock Text="Password"/>
-            <TextBox Text="{Binding Password}"/>
+            <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- REPEAT PASSWORD -->
             <TextBlock Text="Repeat Password"/>
-            <TextBox Text="{Binding RepeatPassword}"/>
+            <TextBox Text="{Binding RepeatPassword, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- SIGN UP BUTTON -->
             <Button Content="Sign Up" Command="{Binding SignUpCommand}"/>

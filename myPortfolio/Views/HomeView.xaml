@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="1">
-            <TextBlock Text="{Binding Name}"/>
+            <Button Content="{Binding Name}" Command="{Binding ProfileCommand}"/>
             <Button Content="Sign Out" Command="{Binding SignOutCommand}"/>
         </StackPanel>
     </Grid>

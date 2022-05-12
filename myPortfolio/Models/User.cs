@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows;
 using Npgsql;
 
 namespace myPortfolio.Models
@@ -88,11 +89,12 @@ namespace myPortfolio.Models
                 }
 
                 // ELSE RETURN FALSE
+                MessageBox.Show("Incorret password. Please try again.");
                 return false;
             }
 
-
             // ELSE RETURN FALSE
+            MessageBox.Show("Username does not exists. Please try again.");
             return false;
 
 
@@ -203,6 +205,7 @@ namespace myPortfolio.Models
             }
 
             // ELSE RETURN FALSE
+            MessageBox.Show("Username is taken. Please try again.");
             return false;
         }
 

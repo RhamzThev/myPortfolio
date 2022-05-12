@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 
 namespace myPortfolio.Commands
 {
@@ -29,6 +30,7 @@ namespace myPortfolio.Commands
                 OnCanExecutedChanged();
             }
         }
+
         public override bool CanExecute(object parameter)
         {
             string username = _startViewModel.Username;
@@ -43,12 +45,13 @@ namespace myPortfolio.Commands
             string password = _startViewModel.Password;
 
             // LOG IN THE USER
-            User.LogIn(username, password);
-
-            // START A SESSION
+            bool loggedIn = User.LogIn(username, password);
 
             // GO TO MAIN PAGE
-            _navigation.CurrentViewModel = new HomeViewModel(_navigation);
+            if(loggedIn)
+            {
+                _navigation.CurrentViewModel = new HomeViewModel(_navigation);
+            } 
         }
     }
 }
