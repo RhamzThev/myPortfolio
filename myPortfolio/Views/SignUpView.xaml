@@ -19,22 +19,22 @@
 
             <!-- NAME -->
             <TextBlock Text="Name"/>
-            <TextBox />
+            <TextBox Text="{Binding Name}"/>
 
             <!-- USERNAME -->
             <TextBlock Text="Username"/>
-            <TextBox />
+            <TextBox Text="{Binding Username}"/>
 
             <!-- PASSWORD -->
             <TextBlock Text="Password"/>
-            <TextBox />
+            <TextBox Text="{Binding Password}"/>
 
             <!-- REPEAT PASSWORD -->
             <TextBlock Text="Repeat Password"/>
-            <TextBox />
+            <TextBox Text="{Binding RepeatPassword}"/>
 
             <!-- SIGN UP BUTTON -->
-            <Button Content="Sign Up"/>
+            <Button Content="Sign Up" Command="{Binding SignUpCommand}"/>
 
         </StackPanel>
 

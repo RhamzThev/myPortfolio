@@ -48,7 +48,7 @@
                 <TextBlock Text="No Account?"/>
                 
                 <!-- SIGN UP -->
-                <Button Content="Sign Up"/>
+                <Button Content="Sign Up" Command="{Binding SignUpCommand}"/>
                 
                 <!-- SIGN IN AS GUEST -->
                 <Button Content="Sign In As Guest" Command="{Binding SignInGuestCommand}"/>

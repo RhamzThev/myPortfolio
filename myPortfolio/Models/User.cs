@@ -192,5 +192,19 @@ namespace myPortfolio.Models
             GetInstance();
         }
 
+        public static bool SignUp(string name, string username, string password, string repeatPassword)
+        {
+            // IF USERNAME IS NOT TAKEN
+            if(!UsernameExists(username))
+            {
+                // RETURN CREATED USER
+                _user = CreateUser(name, username, password);
+                return true;
+            }
+
+            // ELSE RETURN FALSE
+            return false;
+        }
+
     }
 }
