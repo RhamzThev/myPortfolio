@@ -1,26 +1,22 @@
-﻿using myPortfolio.Models;
-using myPortfolio.Services;
-using myPortfolio.ViewModels;
+﻿using myPortfolio.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace myPortfolio.Commands
 {
-    class SignOutCommand : BaseCommand
+    public class DeleteAccountCommand : BaseCommand
     {
         private readonly Navigation _navigation;
 
-        public SignOutCommand(Navigation navigation)
+        public DeleteAccountCommand(Navigation navigation)
         {
             _navigation = navigation;
         }
 
         public override void Execute(object parameter)
         {
-            _navigation.CurrentViewModel = new StartViewModel(_navigation);
-
-            User.SetInstance(null);
+            throw new NotImplementedException();
         }
     }
 }

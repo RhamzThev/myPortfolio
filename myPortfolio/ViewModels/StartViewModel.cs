@@ -33,7 +33,7 @@ namespace myPortfolio.ViewModels
         {
             LogInCommand = new LogInCommand(this, navigation);
             SignInGuestCommand = new SignInGuestCommand(navigation);
-            SignUpCommand = new NavigateCommand(navigation , new SignUpViewModel(navigation));
+            SignUpCommand = new NavigateCommand<SignUpViewModel>(navigation , () => new SignUpViewModel(navigation));
         }
 
     }

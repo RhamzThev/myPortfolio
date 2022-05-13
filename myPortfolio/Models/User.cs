@@ -37,7 +37,6 @@ namespace myPortfolio.Models
         }
 
 
-
         /*
          * HELPER FUCNTIONS
          */
@@ -153,7 +152,31 @@ namespace myPortfolio.Models
         }
 
         // UPDATE (UPDATE)
+        public static User UpdateUserName(string name)
+        {
+            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
+            conn.Open();
 
+            string cmdText = string.Format("UPDATE users SET usersName = '{0}' WHERE usersUID = '{1}' RETURNING *", name, _username);
+
+            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
+            using NpgsqlDataReader reader = cmd.ExecuteReader();
+
+            reader.Read();
+
+            object[] values = new object[reader.FieldCount];
+            int num = reader.GetValues(values);
+
+            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+
+            User user = new User((string)values[1], (string)values[2]);
+            return user;
+        }
+
+        public static User UpdateUserPassword(string password)
+        {
+            return null;
+        }
         // DELETE (DELETE FROM)
 
 
@@ -209,5 +232,30 @@ namespace myPortfolio.Models
             return false;
         }
 
+        public static bool UpdateName(string name)
+        {
+            string messageBox = string.Format("This will update name from {0} to {1}", User.Name, name);
+            MessageBoxResult messageBoxResult = MessageBox.Show(messageBox, "Update Name", MessageBoxButton.OKCancel);
+
+            if (messageBoxResult == MessageBoxResult.OK)
+            {
+                _user = UpdateUserName(name);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool UpdatePassword(string password, string previousPassword)
+        {
+            //string messageBox = string.Format("This will update name from {0} to {1}", User.Name, name);
+            //MessageBoxResult messageBoxResult = MessageBox.Show(messageBox, "Update Name", MessageBoxButton.OKCancel);
+
+            //if (messageBoxResult == MessageBoxResult.OK)
+            //{
+            //    _user = UpdateUserName(name);
+            //    return true;
+            //}
+            return false;
+        }
     }
 }

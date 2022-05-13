@@ -12,14 +12,17 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Button Grid.Row="1" Content="Back" Command="{Binding BackCommand}"/>
+
         <!-- UPDATE PROFILE -->
-        <TextBlock Grid.Row="1" Text="Update Profile"/>
+        <TextBlock Grid.Row="2" Text="Update Profile"/>
     
         <!-- UPDATE BUTTONS -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -29,28 +32,36 @@
             <!-- NAME -->
             <StackPanel Grid.Row="0">
                 <TextBlock Text="Name" />
-                <TextBox Text="{Binding Name}" />
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding UpdateNameCommand}" Key="Enter"/>
+                    </TextBox.InputBindings>
+                </TextBox>
             </StackPanel>
             
             <!-- USERNAME -->
             <StackPanel Grid.Row="1">
                 <TextBlock Text="Username" />
-                <TextBox IsReadOnly="True" Text="{Binding Username}" />
+                <TextBox IsReadOnly="True" Text="{Binding Username, Mode=OneWay}" />
             </StackPanel>
             
             <!-- PASSWORD -->
             <StackPanel Grid.Row="2">
                 <TextBlock Text="Password" />
-                <TextBox Text="{Binding Password}" />
+                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding x:Name="PasswordKeyBinding" Command="{Binding UpdatePasswordCommand}" Key="Enter"/>
+                    </TextBox.InputBindings>
+                </TextBox>
             </StackPanel>
         </Grid>
         
         <!-- DELETE ACCOUNT -->
-        <StackPanel Grid.Row="3">
+        <StackPanel Grid.Row="4">
             <TextBlock Text="Delete Account"/>
             
             <!-- DELETE BUTTON -->
-            <Button Content="Delete Account" Command="{Binding DeleteAccount}"/>
+            <Button Content="Delete Account" Command="{Binding DeleteAccountCommand}"/>
         </StackPanel>
         
     </Grid>

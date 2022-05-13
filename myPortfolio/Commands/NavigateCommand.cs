@@ -6,21 +6,21 @@ using System.Text;
 
 namespace myPortfolio.Commands
 {
-    public class NavigateCommand : BaseCommand
+    public class NavigateCommand<TViewModel> : BaseCommand where TViewModel : BaseViewModel
     {
 
         private readonly Navigation _navigation;
-        private readonly BaseViewModel _baseViewModel;
+        private readonly Func<TViewModel> _viewModel;
 
-        public NavigateCommand(Navigation navigation, BaseViewModel baseViewModel)
+        public NavigateCommand(Navigation navigation, Func<TViewModel> viewModel)
         {
             _navigation = navigation;
-            _baseViewModel = baseViewModel;
+            _viewModel = viewModel;
         }
 
         public override void Execute(object parameter)
         {
-            _navigation.CurrentViewModel = _baseViewModel;
+            _navigation.CurrentViewModel = _viewModel();
         }
     }
 }

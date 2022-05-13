@@ -1,4 +1,5 @@
-﻿using myPortfolio.Models;
+﻿using myPortfolio.Commands;
+using myPortfolio.Models;
 using myPortfolio.Services;
 using System;
 using System.Collections.Generic;
@@ -23,17 +24,11 @@ namespace myPortfolio.ViewModels
             }
         }
 
-        private string _username;
         public string Username
         {
             get
             {
-                return _username;
-            }
-            set
-            {
-                _username = value;
-                OnPropertyChanged(nameof(Username));
+                return User.Username;
             }
         }
 
@@ -51,12 +46,18 @@ namespace myPortfolio.ViewModels
             }
         }
 
-        public ICommand DeleteAccount { get; } 
+        public ICommand BackCommand { get; }
+        public ICommand UpdateNameCommand { get; }
+        public ICommand PaswordCommand { get; }
+        public ICommand DeleteAccountCommand { get; }
 
         public ProfileViewModel(Navigation navigation)
         {
             _name = User.Name;
-            _username = User.Username;
+
+            BackCommand = new NavigateCommand<HomeViewModel>(navigation, () => new HomeViewModel(navigation));
+            UpdateNameCommand = new UpdateNameCommand(this, navigation);
+            DeleteAccountCommand = new DeleteAccountCommand(navigation);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace myPortfolio.ViewModels
         public HomeViewModel(Navigation navigation)
         {
             SignOutCommand = new SignOutCommand(navigation);
-            ProfileCommand = new NavigateCommand(navigation, new ProfileViewModel(navigation));
+            ProfileCommand = new NavigateCommand<ProfileViewModel>(navigation, () => new ProfileViewModel(navigation));
         }
     }
 }
