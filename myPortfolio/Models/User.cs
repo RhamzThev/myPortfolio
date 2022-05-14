@@ -173,9 +173,22 @@ namespace myPortfolio.Models
             return user;
         }
 
-        public static User UpdateUserPassword(string password)
+        public static void UpdateUserPassword(string password)
         {
-            return null;
+            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
+            conn.Open();
+
+            string cmdText = string.Format("UPDATE users SET usersPWD = '{0}' WHERE usersUID = '{1}' RETURNING *", password, _username);
+
+            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
+            using NpgsqlDataReader reader = cmd.ExecuteReader();
+
+            reader.Read();
+
+            object[] values = new object[reader.FieldCount];
+            int num = reader.GetValues(values);
+
+            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
         }
         // DELETE (DELETE FROM)
 
@@ -247,14 +260,15 @@ namespace myPortfolio.Models
 
         public static bool UpdatePassword(string password, string previousPassword)
         {
-            //string messageBox = string.Format("This will update name from {0} to {1}", User.Name, name);
-            //MessageBoxResult messageBoxResult = MessageBox.Show(messageBox, "Update Name", MessageBoxButton.OKCancel);
-
-            //if (messageBoxResult == MessageBoxResult.OK)
-            //{
-            //    _user = UpdateUserName(name);
-            //    return true;
-            //}
+            if(ValidCredentials(_username, previousPassword))
+            {
+                if(!string.Equals(password, previousPassword))
+                {
+                    UpdateUserPassword(password);
+                    return true;
+                }
+                return false;
+            }
             return false;
         }
     }

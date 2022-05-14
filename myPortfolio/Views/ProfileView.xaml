@@ -53,6 +53,11 @@
                         <KeyBinding x:Name="PasswordKeyBinding" Command="{Binding UpdatePasswordCommand}" Key="Enter"/>
                     </TextBox.InputBindings>
                 </TextBox>
+                <Popup IsOpen="{Binding PopupIsOpen}">
+                    <Border Background="White">
+                        <local:UpdatePasswordView/>
+                    </Border>
+                </Popup>
             </StackPanel>
         </Grid>
         
