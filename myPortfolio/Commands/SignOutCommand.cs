@@ -18,9 +18,8 @@ namespace myPortfolio.Commands
 
         public override void Execute(object parameter)
         {
+            User.SignOut();
             _navigation.CurrentViewModel = new StartViewModel(_navigation);
-
-            User.SetInstance(null);
         }
     }
 }

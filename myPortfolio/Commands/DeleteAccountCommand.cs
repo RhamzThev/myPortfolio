@@ -1,4 +1,6 @@
-﻿using myPortfolio.Services;
+﻿using myPortfolio.Models;
+using myPortfolio.Services;
+using myPortfolio.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +18,12 @@ namespace myPortfolio.Commands
 
         public override void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            bool deletedAccount = User.DeleteAccount();
+
+            if(deletedAccount)
+            {
+                _navigation.CurrentViewModel = new StartViewModel(_navigation);
+            }
         }
     }
 }

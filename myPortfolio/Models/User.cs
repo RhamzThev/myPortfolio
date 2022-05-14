@@ -28,12 +28,27 @@ namespace myPortfolio.Models
             set { _username = value; }
         }
 
+        private static bool _isGuest;
+
+        public static bool IsGuest
+        {
+            get { return _isGuest; }
+            set { _isGuest = value; }
+        }
 
 
         private User(string name, string username)
         {
             _username = username;
             _name = name;
+            _isGuest = false;
+        }
+
+        private User(string name, string username, bool isGuest)
+        {
+            _username = username;
+            _name = name;
+            _isGuest = isGuest;
         }
 
 
@@ -181,36 +196,27 @@ namespace myPortfolio.Models
             string cmdText = string.Format("UPDATE users SET usersPWD = '{0}' WHERE usersUID = '{1}' RETURNING *", password, _username);
 
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
-
-            reader.Read();
-
-            object[] values = new object[reader.FieldCount];
-            int num = reader.GetValues(values);
+            cmd.ExecuteNonQuery();
 
             if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
         }
         // DELETE (DELETE FROM)
+        public static void DeleteUser()
+        {
+            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
+            conn.Open();
 
+            string cmdText = string.Format("DELETE FROM users WHERE usersUID = '{0}'", _username);
+
+            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
+            cmd.ExecuteNonQuery();
+
+            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+        }
 
         /*
-         * GET/SET INSTANCE + BUSINESS LOGIC
+         * BUSINESS LOGIC
          */
-
-        public static User GetInstance()
-        {
-            if(_user == null)
-            {
-                _user = new User("Guest", "Guest");
-            }
-
-            return _user;
-        }
-
-        public static void SetInstance(User user)
-        {
-            _user = user;
-        }
 
         public static bool LogIn(string username, string password)
         {
@@ -227,7 +233,7 @@ namespace myPortfolio.Models
 
         public static void SignInGuest()
         {
-            GetInstance();
+            _user = new User("Guest", "Guest", true);
         }
 
         public static bool SignUp(string name, string username, string password, string repeatPassword)
@@ -243,6 +249,12 @@ namespace myPortfolio.Models
             // ELSE RETURN FALSE
             MessageBox.Show("Username is taken. Please try again.");
             return false;
+        }
+
+
+        public static void SignOut()
+        {
+            _user = null;
         }
 
         public static bool UpdateName(string name)
@@ -268,6 +280,19 @@ namespace myPortfolio.Models
                     return true;
                 }
                 return false;
+            }
+            return false;
+        }
+
+        public static bool DeleteAccount()
+        {
+            string messageBox = "Are you sure you want to delete your account? This action will be irreversible.";
+            MessageBoxResult messageBoxResult = MessageBox.Show(messageBox, "Delete Account", MessageBoxButton.YesNo);
+
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                DeleteUser();
+                return true;
             }
             return false;
         }
