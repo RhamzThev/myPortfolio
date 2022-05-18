@@ -15,6 +15,13 @@
 
         <StackPanel Grid.Row="1">
             <Button Content="{Binding Name}" Command="{Binding ProfileCommand}"/>
+            <ListBox ItemsSource="{Binding Games}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
             <Button Content="Sign Out" Command="{Binding SignOutCommand}"/>
         </StackPanel>
     </Grid>

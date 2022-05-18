@@ -19,6 +19,13 @@ namespace myPortfolio.ViewModels
             }
         }
 
+        public List<Game> Games {
+            get
+            {
+                return Game.Games;
+            } 
+        }
+
         public ICommand SignOutCommand { get; }
         public ICommand ProfileCommand { get; }
 

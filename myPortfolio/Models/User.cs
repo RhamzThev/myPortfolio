@@ -4,10 +4,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using Npgsql;
+using myPortfolio.Models.Database;
 
 namespace myPortfolio.Models
 {
-    public class User
+    public class User : Database.Database
     {
 
         private static User _user;
@@ -62,7 +63,7 @@ namespace myPortfolio.Models
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
-            string cmdText = string.Format("SELECT EXISTS(SELECT 1 FROM users WHERE usersUID = '{0}')", username);
+            string cmdText = string.Format("SELECT EXISTS(SELECT 1 FROM users WHERE username = '{0}')", username);
 
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
             using NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -85,7 +86,7 @@ namespace myPortfolio.Models
                 using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
                 conn.Open();
 
-                string cmdText = string.Format("SELECT EXISTS(SELECT 1 FROM users WHERE usersUID = '{0}' AND usersPWD = '{1}')", username, password);
+                string cmdText = string.Format("SELECT EXISTS(SELECT 1 FROM users WHERE username = '{0}' AND password = '{1}')", username, password);
 
                 using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
                 using NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -114,19 +115,18 @@ namespace myPortfolio.Models
 
         }
 
-
         /*
          * CRUD OPERATIONS
          */
 
 
         // CREATE (INSERT INTO)
-        public static User CreateUser(string name, string username, string password)
+        private static User CreateUser(string name, string username, string password)
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
-            string cmdText = string.Format("INSERT INTO users (usersName, usersUID, usersPWD) VALUES ('{0}', '{1}', '{2}') RETURNING *", name, username, password);
+            string cmdText = string.Format("INSERT INTO users (name, username, password) VALUES ('{0}', '{1}', '{2}') RETURNING *", name, username, password);
 
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
             using NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -143,12 +143,12 @@ namespace myPortfolio.Models
         }
 
         // READ (SELECT)
-        public static User ReadUserByUsername(string username)
+        private static User ReadUserByUsername(string username)
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
-            string cmdText = string.Format("SELECT * FROM users WHERE usersUID = '{0}';", username);
+            string cmdText = string.Format("SELECT * FROM users WHERE username = '{0}';", username);
 
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
             using NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -167,12 +167,12 @@ namespace myPortfolio.Models
         }
 
         // UPDATE (UPDATE)
-        public static User UpdateUserName(string name)
+        private static User UpdateUserName(string name)
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
-            string cmdText = string.Format("UPDATE users SET usersName = '{0}' WHERE usersUID = '{1}' RETURNING *", name, _username);
+            string cmdText = string.Format("UPDATE users SET name = '{0}' WHERE username = '{1}' RETURNING *", name, _username);
 
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
             using NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -188,12 +188,12 @@ namespace myPortfolio.Models
             return user;
         }
 
-        public static void UpdateUserPassword(string password)
+        private static void UpdateUserPassword(string password)
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
-            string cmdText = string.Format("UPDATE users SET usersPWD = '{0}' WHERE usersUID = '{1}' RETURNING *", password, _username);
+            string cmdText = string.Format("UPDATE users SET password = '{0}' WHERE username = '{1}' RETURNING *", password, _username);
 
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
             cmd.ExecuteNonQuery();
@@ -201,12 +201,12 @@ namespace myPortfolio.Models
             if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
         }
         // DELETE (DELETE FROM)
-        public static void DeleteUser()
+        private static void DeleteUser()
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
-            string cmdText = string.Format("DELETE FROM users WHERE usersUID = '{0}'", _username);
+            string cmdText = string.Format("DELETE FROM users WHERE username = '{0}'", _username);
 
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
             cmd.ExecuteNonQuery();
@@ -260,7 +260,7 @@ namespace myPortfolio.Models
         public static bool UpdateName(string name)
         {
             string messageBox = string.Format("This will update name from {0} to {1}", User.Name, name);
-            MessageBoxResult messageBoxResult = MessageBox.Show(messageBox, "Update Name", MessageBoxButton.OKCancel);
+            MessageBoxResult messageBoxResult = MessageBox.Show(messageBox, "Update Name", MessageBoxButton.OKCancel); 
 
             if (messageBoxResult == MessageBoxResult.OK)
             {
