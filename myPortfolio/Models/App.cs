@@ -1,11 +1,12 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace myPortfolio.Models
 {
-    public class Game
+    public class App
     {
         private string _name;
 
@@ -26,7 +27,7 @@ namespace myPortfolio.Models
         private string _folder;
         private string _exePath;
 
-        public Game(string name, string description, string folder, string exePath)
+        public App(string name, string description, string folder, string exePath)
         {
             _name = name;
             _description = description;
@@ -34,9 +35,9 @@ namespace myPortfolio.Models
             _exePath = exePath;
         }
 
-        public static List<Game> Games
+        public static List<App> Apps
         {
-            get { return ReadGames(); }
+            get { return ReadApps(); }
         }
 
 
@@ -49,19 +50,19 @@ namespace myPortfolio.Models
          * CRUD OPERATIONS
          */
 
-        private static List<Game> ReadGames()
+        private static List<App> ReadApps()
         {
 
             // GET GAMES
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
-            string cmdText = "SELECT * FROM games";
+            string cmdText = "SELECT * FROM apps";
 
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
             using NpgsqlDataReader reader = cmd.ExecuteReader();
 
-            List<Game> games = new List<Game>();
+            List<App> apps = new List<App>();
 
             while (reader.Read())
             {
@@ -71,10 +72,10 @@ namespace myPortfolio.Models
                 string folder = reader.GetString(3);
                 string exePath = reader.GetString(4);
 
-                games.Add(new Game(name, description, folder, exePath));
+                apps.Add(new App(name, description, folder, exePath));
             }
 
-            return games;
+            return apps;
 
         }
 
@@ -82,5 +83,10 @@ namespace myPortfolio.Models
          * BUSINESS LOGIC
          */
 
+        public void ExecuteApp()
+        {
+            string filename = string.Format("../Apps/{0}{1}", _description, _exePath);
+            Process.Start(filename);
+        }
     }
 }

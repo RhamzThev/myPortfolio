@@ -19,20 +19,22 @@ namespace myPortfolio.ViewModels
             }
         }
 
-        public List<Game> Games {
+        public List<Models.App> Apps {
             get
             {
-                return Game.Games;
+                return Models.App.Apps;
             } 
         }
 
         public ICommand SignOutCommand { get; }
         public ICommand ProfileCommand { get; }
+        public ICommand ExecuteAppCommand { get; }
 
         public HomeViewModel(Navigation navigation)
         {
             SignOutCommand = new SignOutCommand(navigation);
             ProfileCommand = new ProfileCommand(navigation);
+            ExecuteAppCommand = new ExecuteAppCommand();
         }
     }
 }

@@ -15,10 +15,17 @@
 
         <StackPanel Grid.Row="1">
             <Button Content="{Binding Name}" Command="{Binding ProfileCommand}"/>
-            <ListBox ItemsSource="{Binding Games}">
+            <ListBox ItemsSource="{Binding Apps}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}"/>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}"/>
+                            <Popup IsOpen="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
+                                <Border Background="White">
+                                    <local:AppView/>
+                                </Border>
+                            </Popup>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
