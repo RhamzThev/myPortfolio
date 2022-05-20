@@ -15,7 +15,8 @@
 
         <StackPanel Grid.Row="1">
             <Button Content="{Binding Name}" Command="{Binding ProfileCommand}"/>
-            <ListBox ItemsSource="{Binding Apps}">
+            <Button Content="Add App" Command="{Binding AddAppCommand}"/>
+            <ListBox ItemsSource="{Binding Apps}" SelectedItem="{Binding SelectedItem}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>

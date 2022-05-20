@@ -1,4 +1,5 @@
-﻿using System;
+﻿using myPortfolio.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,15 +7,17 @@ namespace myPortfolio.Commands
 {
     public class ExecuteAppCommand : BaseCommand
     {
+        private HomeViewModel _homeViewModel;
 
-        public ExecuteAppCommand()
+        public ExecuteAppCommand(HomeViewModel homeViewModel)
         {
-
+            _homeViewModel = homeViewModel;
         }
 
         public override void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            Models.App app = _homeViewModel.SelectedItem;
+            app.ExecuteApp();
         }
     }
 }

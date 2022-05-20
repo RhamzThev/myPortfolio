@@ -21,6 +21,9 @@
             <DataTemplate DataType="{x:Type ViewModels:ProfileViewModel}">
                 <Views:ProfileView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModels:AddAppViewModel}">
+                <Views:AddAppView/>
+            </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>
 </Window>
