@@ -138,7 +138,7 @@ namespace myPortfolio.Models
 
             if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
 
-            User user = new User((string)values[1], (string)values[2]);
+            User user = new User((string)values[1], (string)values[3]);
             return user;
         }
 
@@ -161,7 +161,7 @@ namespace myPortfolio.Models
 
             if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
 
-            User user = new User((string)values[1], (string)values[2]);
+            User user = new User((string)values[1], (string)values[3]);
 
             return user;
         }
@@ -184,7 +184,7 @@ namespace myPortfolio.Models
 
             if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
 
-            User user = new User((string)values[1], (string)values[2]);
+            User user = new User((string)values[1], (string)values[3]);
             return user;
         }
 

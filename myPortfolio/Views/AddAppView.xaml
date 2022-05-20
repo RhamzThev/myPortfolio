@@ -14,6 +14,9 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="1">
+
+            <Button Content="Back" Command="{Binding BackCommand}"/>
+
             <TextBlock Text="Name"/>
             <TextBox Text="{Binding Name}"/>
             <TextBlock Text="Description"/>
@@ -39,7 +42,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="Choose File" Command="{Binding ChooseFileCommand}"/>
+                <Button Grid.Column="0" Content="Choose File" Command="{Binding ChooseFileCommand, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Grid.Column="1" Text="{Binding File, UpdateSourceTrigger=PropertyChanged}"/>
 
             </Grid>

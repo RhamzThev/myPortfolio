@@ -4,6 +4,7 @@ using myPortfolio.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace myPortfolio.ViewModels
@@ -40,6 +41,18 @@ namespace myPortfolio.ViewModels
             }
         }
 
+        public Visibility Visibility 
+        { 
+            get 
+            { 
+                if(string.Equals(User.Username, "rhamzthev"))
+                {
+                    return Visibility.Visible;
+                }
+                return Visibility.Collapsed;
+            } 
+        }
+
         public ICommand ProfileCommand { get; }
         public ICommand AddAppCommand { get; }
         public ICommand ExecuteAppCommand { get; }
@@ -48,7 +61,7 @@ namespace myPortfolio.ViewModels
         public HomeViewModel(Navigation navigation)
         {
             ProfileCommand = new ProfileCommand(navigation);
-            AddAppCommand = new NavigateCommand<AddAppViewModel>(navigation, () => new AddAppViewModel());
+            AddAppCommand = new NavigateCommand<AddAppViewModel>(navigation, () => new AddAppViewModel(navigation));
             ExecuteAppCommand = new ExecuteAppCommand(this);
             SignOutCommand = new SignOutCommand(navigation);
         }

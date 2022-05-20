@@ -1,4 +1,5 @@
 ﻿using myPortfolio.Commands;
+using myPortfolio.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -65,14 +66,17 @@ namespace myPortfolio.ViewModels
             }
         }
 
+        public ICommand BackCommand { get; }
         public ICommand ChooseFolderCommand { get; }
         public ICommand ChooseFileCommand { get; }
         public ICommand AddAppCommand { get; }
 
-        public AddAppViewModel()
+        public AddAppViewModel(Navigation navigation)
         {
+            BackCommand = new NavigateCommand<HomeViewModel>(navigation, () => new HomeViewModel(navigation));
             ChooseFolderCommand = new FolderDialogCommand(this);
             ChooseFileCommand = new FileDialogCommand(this);
+            AddAppCommand = new AddAppCommand(this, navigation);
         }
     }    
 }
