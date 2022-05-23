@@ -5,25 +5,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:Views="clr-namespace:myPortfolio.Views"
         xmlns:ViewModels="clr-namespace:myPortfolio.ViewModels"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="myPortfolio" Height="450" Width="800">
-    <ContentControl Content="{Binding CurrentViewModel}">
-        <ContentControl.Resources>
-            <DataTemplate DataType="{x:Type ViewModels:StartViewModel}">
-                <Views:StartView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type ViewModels:HomeViewModel}">
-                <Views:HomeView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type ViewModels:SignUpViewModel}">
-                <Views:SignUpView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type ViewModels:ProfileViewModel}">
-                <Views:ProfileView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type ViewModels:AddAppViewModel}">
-                <Views:AddAppView/>
-            </DataTemplate>
-        </ContentControl.Resources>
-    </ContentControl>
+        Title="myPortfolio" Height="450" Width="800" 
+        AllowsTransparency="True"
+        Background="Transparent" 
+        WindowStyle="None">
+    <Border CornerRadius="20">
+        <Border.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="#FF8080" Offset="0"/>
+                <GradientStop Color="LightYellow" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+                    
+            <!--WINDOW BUTTONS-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Right"
+                            Margin="0, 10,10, 0">
+                    <iconPacks:PackIconCodicons Margin="10" Kind="ChromeMinimize" Foreground="White"/>
+                    <iconPacks:PackIconCodicons Margin="10" Kind="ChromeMaximize" Foreground="White"/>
+                    <iconPacks:PackIconCodicons Margin="10" Kind="ChromeClose" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+            <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type ViewModels:StartViewModel}">
+                        <Views:StartView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type ViewModels:HomeViewModel}">
+                        <Views:HomeView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type ViewModels:SignUpViewModel}">
+                        <Views:SignUpView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type ViewModels:ProfileViewModel}">
+                        <Views:ProfileView/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type ViewModels:AddAppViewModel}">
+                        <Views:AddAppView/>
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
+        </Grid>
+    </Border>
 </Window>
