@@ -8,6 +8,7 @@
                 <ResourceDictionary Source="Themes/ButtonThemes.xaml"/>
                 <ResourceDictionary Source="Themes/TextBlockThemes.xaml"/>
                 <ResourceDictionary Source="Themes/TextBoxThemes.xaml"/>
+                <ResourceDictionary Source="Themes/BorderThemes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

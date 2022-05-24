@@ -6,38 +6,106 @@
              xmlns:local="clr-namespace:myPortfolio.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border Width="300"
+            Height="350"
+            Style="{StaticResource backgroundBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1">
             <!-- SIGN UP -->
-            <TextBlock Text="Sign Up"/>
+            <TextBlock Grid.Row="1" 
+                       Text="Sign Up"
+                       Style="{StaticResource subtitleTheme}"
+                       Margin="0, 25"/>
 
-            <!-- NAME -->
-            <TextBlock Text="Name"/>
-            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Grid.Row="2">
 
-            <!-- USERNAME -->
-            <TextBlock Text="Username"/>
-            <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+                <!-- NAME -->
+                <StackPanel Margin="50, 0">
+                    <TextBox Style="{StaticResource textBoxTheme}" 
+                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0, 0, 0, 2"
+                             TextChanged="NameChanged">
+                        <TextBox.Background>
+                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Foreground="White" 
+                                               Opacity="0.5" 
+                                               Text="Name"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
 
-            <!-- PASSWORD -->
-            <TextBlock Text="Password"/>
-            <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
+                <!-- USERNAME -->
+                <StackPanel Margin="50, 10, 50, 0">
+                    <TextBox Style="{StaticResource textBoxTheme}" 
+                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="UsernameChanged">
+                        <TextBox.Background>
+                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Foreground="White" 
+                                           Opacity="0.5"
+                                           Text="Username"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
 
-            <!-- REPEAT PASSWORD -->
-            <TextBlock Text="Repeat Password"/>
-            <TextBox Text="{Binding RepeatPassword, UpdateSourceTrigger=PropertyChanged}"/>
+                <!-- PASSWORD -->
+                <StackPanel Margin="50, 10, 50, 0">
+                    <TextBox Style="{StaticResource textBoxTheme}" 
+                             Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="PasswordChanged">
+                        <TextBox.Background>
+                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Foreground="White" 
+                                           Opacity="0.5"
+                                           Text="Password"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
 
-            <!-- SIGN UP BUTTON -->
-            <Button Content="Sign Up" Command="{Binding SignUpCommand}"/>
+                <!-- REPEAT PASSWORD -->
+                <StackPanel Margin="50, 10">
+                    <TextBox Style="{StaticResource textBoxTheme}" 
+                             Text="{Binding RepeatPassword, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="RepeatPasswordChanged">
+                        <TextBox.Background>
+                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Foreground="White" 
+                                           Opacity="0.5"
+                                           Text="Repeat Password"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
 
-        </StackPanel>
+                <!-- SIGN UP BUTTON -->
+                <Button Content="Sign Up" 
+                        Command="{Binding SignUpCommand}"
+                        Style="{StaticResource buttonTheme}"
+                        Margin="50, 10"/>
 
-    </Grid>
+            </StackPanel>
 
+        </Grid>
+    </Border>
 </UserControl>
