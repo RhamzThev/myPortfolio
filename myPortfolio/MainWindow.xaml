@@ -10,7 +10,9 @@
         Title="myPortfolio" Height="450" Width="800" 
         AllowsTransparency="True"
         Background="Transparent" 
-        WindowStyle="None">
+        WindowStyle="None" 
+        MouseDown="Drag"
+        WindowState="{Binding WindowState}">
     <Border CornerRadius="20">
         <Border.Background>
             <LinearGradientBrush>
@@ -30,14 +32,25 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-
                 <StackPanel Grid.Column="1" 
                             Orientation="Horizontal" 
                             HorizontalAlignment="Right"
                             Margin="0, 10,10, 0">
-                    <iconPacks:PackIconCodicons Margin="10" Kind="ChromeMinimize" Foreground="White"/>
-                    <iconPacks:PackIconCodicons Margin="10" Kind="ChromeMaximize" Foreground="White"/>
-                    <iconPacks:PackIconCodicons Margin="10" Kind="ChromeClose" Foreground="White"/>
+                    <Button Style="{StaticResource invisibleButton}" 
+                            Command="{Binding MinimizeCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                        <iconPacks:PackIconCodicons  Margin="10" Kind="ChromeMinimize" Foreground="White"/>
+                    </Button>
+                    <Button Style="{StaticResource invisibleButton}" 
+                            Command="{Binding MaximizeCommand}"
+                            CommandParameter="{Binding}">
+                        <iconPacks:PackIconCodicons Margin="10" Kind="{Binding Maximize}" Foreground="White"/>
+                    </Button>
+                    <Button Style="{StaticResource invisibleButton}" 
+                            Command="{Binding CloseCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                        <iconPacks:PackIconCodicons Margin="10" Kind="ChromeClose" Foreground="White"/>
+                    </Button>
                 </StackPanel>
             </Grid>
             <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">

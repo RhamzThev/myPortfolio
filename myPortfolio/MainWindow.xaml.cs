@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.IconPacks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,35 @@ namespace myPortfolio
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Close(object sender, MouseButtonEventArgs e)
+        {
+            Close();
+        }
+
+        private void Maximize(object sender, MouseButtonEventArgs e)
+        {
+            if(this.WindowState == WindowState.Normal)
+            {
+                this.WindowState = WindowState.Maximized;
+                ((PackIconCodicons)sender).Kind = PackIconCodiconsKind.ChromeRestore;
+            } 
+            else
+            {
+                this.WindowState = WindowState.Normal;
+                ((PackIconCodicons)sender).Kind = PackIconCodiconsKind.ChromeMaximize;
+            }
+        }
+
+        private void Minimize(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void Drag(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }
