@@ -28,7 +28,10 @@ namespace myPortfolio
 
         private void Drag(object sender, MouseButtonEventArgs e)
         {
-            DragMove();
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
     }
 }

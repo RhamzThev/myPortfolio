@@ -1,4 +1,5 @@
-﻿using System;
+﻿using myPortfolio.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -47,31 +48,53 @@ namespace myPortfolio.Views
             }
         }
 
-        private void PasswordChanged(object sender, TextChangedEventArgs e)
+        private void PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (((TextBox)sender).Text == "")
+            if (this.DataContext != null)
+            { ((SignUpViewModel)this.DataContext).Password = ((PasswordBox)sender).Password; }
+
+            if (((PasswordBox)sender).Password == "")
             {
-                ChangeTextBox(sender, "Password");
+                ChangePasswordBox(sender, "Password");
             }
             else
             {
-                ((TextBox)sender).Background = null;
+                ((PasswordBox)sender).Background = null;
             }
         }
 
-        private void RepeatPasswordChanged(object sender, TextChangedEventArgs e)
+        private void RepeatPasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (((TextBox)sender).Text == "")
+            if (this.DataContext != null)
+            { ((SignUpViewModel)this.DataContext).RepeatPassword = ((PasswordBox)sender).Password; }
+
+            if (((PasswordBox)sender).Password == "")
             {
-                ChangeTextBox(sender, "Repeat Password");
+                ChangePasswordBox(sender, "Repeat Password");
             }
             else
             {
-                ((TextBox)sender).Background = null;
+                ((PasswordBox)sender).Background = null;
             }
+        }
+
+        private void ChangePasswordBox(object sender, string text)
+        {
+            VisualBrush visualBrush = SetBlock(text);
+
+            // PAINT IMAGE
+            ((PasswordBox)sender).Background = visualBrush;
         }
 
         private void ChangeTextBox(object sender, string text)
+        {
+            VisualBrush visualBrush = SetBlock(text);
+
+            // PAINT IMAGE
+            ((TextBox)sender).Background = visualBrush;
+        }
+
+        private VisualBrush SetBlock(string text)
         {
             // CREATE VISUAL BRUSH
             VisualBrush visualBrush = new VisualBrush();
@@ -87,8 +110,7 @@ namespace myPortfolio.Views
             // SET TEXTBOX TO BE BRUSH'S VISUAL
             visualBrush.Visual = textblock;
 
-            // PAINT IMAGE
-            ((TextBox)sender).Background = visualBrush;
+            return visualBrush;
         }
     }
 }

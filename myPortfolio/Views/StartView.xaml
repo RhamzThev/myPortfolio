@@ -41,7 +41,18 @@
                                                     Margin="0, 0, 5, 0"/>
                         <TextBox DockPanel.Dock="Left"
                                  Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource textBoxTheme}"/>
+                                 Style="{StaticResource textBoxTheme}"
+                                 TextChanged="UsernameChanged">
+                            <TextBox.Background>
+                                <VisualBrush Stretch="None" AlignmentX="Left">
+                                    <VisualBrush.Visual>
+                                        <TextBlock Foreground="White" 
+                                               Opacity="0.5" 
+                                               Text="Username"/>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </TextBox.Background>
+                        </TextBox>
                     </DockPanel>
                     <Border Width="200" Height="1" Background="White"/>
                 </StackPanel>
@@ -54,8 +65,18 @@
                                                     Foreground="White"
                                                     Margin="0, 0, 5, 0"/>
                         <PasswordBox DockPanel.Dock="Left"
-                                     PasswordChanged="PasswordBox_PasswordChanged"
-                                     Style="{StaticResource passwordBoxTheme}"/>
+                                     PasswordChanged="PasswordChanged"
+                                     Style="{StaticResource passwordBoxTheme}">
+                            <PasswordBox.Background>
+                                <VisualBrush Stretch="None" AlignmentX="Left">
+                                    <VisualBrush.Visual>
+                                        <TextBlock Foreground="White" 
+                                           Opacity="0.5"
+                                           Text="Password"/>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </PasswordBox.Background>
+                        </PasswordBox>
                     </DockPanel>
                     <Border Width="200" Height="1" Background="White"/>
                 </StackPanel>

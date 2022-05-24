@@ -24,10 +24,66 @@ namespace myPortfolio.Views
             InitializeComponent();
         }
 
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        private void PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (this.DataContext != null)
             { ((StartViewModel)this.DataContext).Password = ((PasswordBox)sender).Password; }
+
+            if (((PasswordBox)sender).Password == "")
+            {
+                ChangePasswordBox(sender, "Password");
+            }
+            else
+            {
+                ((PasswordBox)sender).Background = null;
+            }
+        }
+
+        private void UsernameChanged(object sender, TextChangedEventArgs e)
+        {
+            if (((TextBox)sender).Text == "")
+            {
+                ChangeTextBox(sender, "Username");
+            }
+            else
+            {
+                ((TextBox)sender).Background = null;
+            }
+        }
+
+        private void ChangePasswordBox(object sender, string text)
+        {
+            VisualBrush visualBrush = SetBlock(text);
+
+            // PAINT IMAGE
+            ((PasswordBox)sender).Background = visualBrush;
+        }
+
+        private void ChangeTextBox(object sender, string text)
+        {
+            VisualBrush visualBrush = SetBlock(text);
+
+            // PAINT IMAGE
+            ((TextBox)sender).Background = visualBrush;
+        }
+
+        private VisualBrush SetBlock(string text)
+        {
+            // CREATE VISUAL BRUSH
+            VisualBrush visualBrush = new VisualBrush();
+            visualBrush.Stretch = Stretch.None;
+            visualBrush.AlignmentX = AlignmentX.Left;
+
+            // CREATE VISUAL (TEXT BOX)
+            TextBlock textblock = new TextBlock();
+            textblock.Foreground = new SolidColorBrush(Colors.White);
+            textblock.Opacity = 0.5;
+            textblock.Text = text;
+
+            // SET TEXTBOX TO BE BRUSH'S VISUAL
+            visualBrush.Visual = textblock;
+
+            return visualBrush;
         }
     }
 }

@@ -64,10 +64,9 @@
 
                 <!-- PASSWORD -->
                 <StackPanel Margin="50, 10, 50, 0">
-                    <TextBox Style="{StaticResource textBoxTheme}" 
-                             Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                             TextChanged="PasswordChanged">
-                        <TextBox.Background>
+                    <PasswordBox Style="{StaticResource passwordBoxTheme}" 
+                             PasswordChanged="PasswordChanged">
+                        <PasswordBox.Background>
                             <VisualBrush Stretch="None" AlignmentX="Left">
                                 <VisualBrush.Visual>
                                     <TextBlock Foreground="White" 
@@ -75,17 +74,16 @@
                                            Text="Password"/>
                                 </VisualBrush.Visual>
                             </VisualBrush>
-                        </TextBox.Background>
-                    </TextBox>
+                        </PasswordBox.Background>
+                    </PasswordBox>
                     <Border Width="200" Height="1" Background="White"/>
                 </StackPanel>
 
                 <!-- REPEAT PASSWORD -->
                 <StackPanel Margin="50, 10">
-                    <TextBox Style="{StaticResource textBoxTheme}" 
-                             Text="{Binding RepeatPassword, UpdateSourceTrigger=PropertyChanged}"
-                             TextChanged="RepeatPasswordChanged">
-                        <TextBox.Background>
+                    <PasswordBox Style="{StaticResource passwordBoxTheme}" 
+                             PasswordChanged="RepeatPasswordChanged">
+                        <PasswordBox.Background>
                             <VisualBrush Stretch="None" AlignmentX="Left">
                                 <VisualBrush.Visual>
                                     <TextBlock Foreground="White" 
@@ -93,8 +91,8 @@
                                            Text="Repeat Password"/>
                                 </VisualBrush.Visual>
                             </VisualBrush>
-                        </TextBox.Background>
-                    </TextBox>
+                        </PasswordBox.Background>
+                    </PasswordBox>
                     <Border Width="200" Height="1" Background="White"/>
                 </StackPanel>
 
