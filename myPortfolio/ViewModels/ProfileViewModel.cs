@@ -74,6 +74,20 @@ namespace myPortfolio.ViewModels
             }
         }
 
+        private string _displayName;
+        public string DisplayName
+        {
+            get
+            {
+                return _displayName;
+            }
+            set
+            {
+                _displayName = value;
+                OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+
         public ICommand BackCommand { get; }
         public ICommand UpdateNameCommand { get; }
         public ICommand UpdatePasswordCommand { get; }
@@ -82,8 +96,8 @@ namespace myPortfolio.ViewModels
 
         public ProfileViewModel(Navigation navigation)
         {
-            _name = User.Name;
             _popupIsOpen=false;
+            _displayName = String.Format("Change Name ({0})", User.Name);
 
             BackCommand = new NavigateCommand<HomeViewModel>(navigation, () => new HomeViewModel(navigation));
             UpdateNameCommand = new UpdateNameCommand(this);

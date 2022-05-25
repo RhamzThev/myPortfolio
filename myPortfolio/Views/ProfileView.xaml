@@ -4,70 +4,118 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:myPortfolio.Views"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <Button Grid.Row="1" Content="Back" Command="{Binding BackCommand}"/>
-
-        <!-- UPDATE PROFILE -->
-        <TextBlock Grid.Row="2" Text="Update Profile"/>
-    
-        <!-- UPDATE BUTTONS -->
-        <Grid Grid.Row="3">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="UserControl_Loaded">
+    <Border Width="300"
+            Height="300"
+            Style="{StaticResource backgroundBorder}">
+        <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <!-- NAME -->
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="Name" />
-                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding Command="{Binding UpdateNameCommand}" Key="Enter"/>
-                    </TextBox.InputBindings>
-                </TextBox>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="20 , 20, 0, 0">
+                    <Button Style="{StaticResource invisibleButton}"
+                            Command="{Binding BackCommand}">
+                        <iconPacks:PackIconCodicons Kind="ChevronLeft" Foreground="White" Background="Transparent"/>
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+
+            <!-- UPDATE PROFILE -->
+            <TextBlock Style="{StaticResource subtitleTheme}" 
+                       Grid.Row="2" 
+                       Text="Update Profile"
+                       Margin="0, 25"/>
+
+            <!-- UPDATE BUTTONS -->
+            <StackPanel Grid.Row="3">
+
+                <!-- NAME -->
+                <StackPanel Margin="50, 0">
+                    <TextBox Style="{StaticResource textBoxTheme}" 
+                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0, 0, 0, 2"
+                             TextChanged="NameChanged">
+                        <TextBox.Background>
+                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Foreground="White" 
+                                               Opacity="0.5" 
+                                               Text="{Binding DisplayName}"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Background>
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding UpdateNameCommand}" Key="Enter"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
+
+                <!-- USERNAME -->
+                <StackPanel Margin="50, 10, 50, 0">
+                    <TextBox Style="{StaticResource textBoxTheme}"
+                             IsReadOnly="True"
+                             Text="{Binding Username, Mode=OneWay}"/>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
+
+                <!-- PASSWORD -->
+                <StackPanel Margin="50, 10">
+                    <PasswordBox Style="{StaticResource passwordBoxTheme}" 
+                             PasswordChanged="PasswordChanged">
+                        <PasswordBox.Background>
+                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Foreground="White" 
+                                           Opacity="0.5"
+                                           Text="Change Password"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </PasswordBox.Background>
+                        <PasswordBox.InputBindings>
+                            <KeyBinding x:Name="PasswordKeyBinding" Command="{Binding UpdatePasswordCommand}" Key="Enter"/>
+                        </PasswordBox.InputBindings>
+                    </PasswordBox>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
+
+                <!-- DELETE BUTTON -->
+                <StackPanel>
+                    <TextBlock Text="Delete Account" Style="{StaticResource headerTheme}"/>
+                </StackPanel>
+                <Button Style="{StaticResource buttonTheme}" 
+                        Content="Delete Account" 
+                        Command="{Binding DeleteAccountCommand}"
+                        Margin="50, 10"/>
+
             </StackPanel>
-            
-            <!-- USERNAME -->
-            <StackPanel Grid.Row="1">
-                <TextBlock Text="Username" />
-                <TextBox IsReadOnly="True" Text="{Binding Username, Mode=OneWay}" />
-            </StackPanel>
-            
-            <!-- PASSWORD -->
-            <StackPanel Grid.Row="2">
-                <TextBlock Text="Password" />
-                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.InputBindings>
-                        <KeyBinding x:Name="PasswordKeyBinding" Command="{Binding UpdatePasswordCommand}" Key="Enter"/>
-                    </TextBox.InputBindings>
-                </TextBox>
-                <Popup IsOpen="{Binding PopupIsOpen}">
-                    <Border Background="White">
-                        <local:UpdatePasswordView/>
-                    </Border>
-                </Popup>
-            </StackPanel>
+            <Popup IsOpen="{Binding PopupIsOpen}" 
+                   Placement="Center" 
+                   AllowsTransparency="True"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   x:Name="passwordPopup">
+                <local:UpdatePasswordView/>
+            </Popup>
         </Grid>
-        
-        <!-- DELETE ACCOUNT -->
-        <StackPanel Grid.Row="4">
-            <TextBlock Text="Delete Account"/>
-            
-            <!-- DELETE BUTTON -->
-            <Button Content="Delete Account" Command="{Binding DeleteAccountCommand}"/>
-        </StackPanel>
-        
-    </Grid>
+    </Border>
 </UserControl>

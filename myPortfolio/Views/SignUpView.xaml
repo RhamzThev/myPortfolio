@@ -4,26 +4,47 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:myPortfolio.Views"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border Width="300"
-            Height="350"
+            Height="300"
             Style="{StaticResource backgroundBorder}">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <!--BACK BUTTON-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="20 , 20, 0, 0">
+                    <Button Style="{StaticResource invisibleButton}"
+                            Command="{Binding BackCommand}">
+                        <iconPacks:PackIconCodicons Kind="ChevronLeft" Foreground="White" Background="Transparent"/>
+                    </Button>
+                </StackPanel>
+                
+            </Grid>
+            
             <!-- SIGN UP -->
-            <TextBlock Grid.Row="1" 
+            <TextBlock Grid.Row="2" 
                        Text="Sign Up"
                        Style="{StaticResource subtitleTheme}"
                        Margin="0, 25"/>
 
-            <StackPanel Grid.Row="2">
+            <StackPanel Grid.Row="3">
 
                 <!-- NAME -->
                 <StackPanel Margin="50, 0">

@@ -49,10 +49,12 @@ namespace myPortfolio.ViewModels
             set { _repeatPassword = value; OnPropertyChanged(nameof(RepeatPassword)); }
         }
 
+        public ICommand BackCommand { get; }
         public ICommand SignUpCommand { get; }
 
         public SignUpViewModel(Navigation navigation)
         {
+            BackCommand = new NavigateCommand<StartViewModel>(navigation, () => new StartViewModel(navigation));
             SignUpCommand = new SignUpCommand(this, navigation);
 
         }

@@ -24,9 +24,12 @@ namespace myPortfolio.Commands
             string previousPassword = _profileViewModel.PreviousPassword;
 
             _profileViewModel.PopupIsOpen = false;
-            _profileViewModel.Password = null;
 
             bool updatedPassword = User.UpdatePassword(password, previousPassword);
+
+            _profileViewModel.Password = "";
+            _profileViewModel.PreviousPassword = "";
+
         }
     }
 }

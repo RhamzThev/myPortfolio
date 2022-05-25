@@ -96,7 +96,7 @@
                 
                 <!-- SIGN IN AS GUEST -->
                 <TextBlock Style="{StaticResource paragraphTheme}" HorizontalAlignment="Center">
-                    or <Hyperlink Command="{Binding SignUpCommand}">Sign in as Guest</Hyperlink>
+                    or <Hyperlink Command="{Binding SignInGuestCommand}">Sign in as Guest</Hyperlink>
                 </TextBlock>
             </StackPanel>
             

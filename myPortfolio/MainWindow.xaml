@@ -34,7 +34,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" 
                             Orientation="Horizontal" 
-                            HorizontalAlignment="Right"
+                            HorizontalAlignment="Center"
                             Margin="0, 10,10, 0">
                     <Button Style="{StaticResource invisibleButton}" 
                             Command="{Binding MinimizeCommand}"

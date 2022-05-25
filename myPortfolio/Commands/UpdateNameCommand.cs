@@ -24,6 +24,9 @@ namespace myPortfolio.Commands
 
             bool updatedName = User.UpdateName(name);
 
+            _profileViewModel.DisplayName = String.Format("Change Name ({0})", User.Name);
+            _profileViewModel.Name = "";
+
         }
     }
 }
