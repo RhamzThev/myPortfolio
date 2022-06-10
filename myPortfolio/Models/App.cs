@@ -9,6 +9,9 @@ using System.Text.RegularExpressions;
 
 namespace myPortfolio.Models
 {
+    /// <summary>
+    /// Class <c>App</c> is an object representing an external application within the database.
+    /// </summary>
     public class App
     {
         private string _name;
@@ -30,6 +33,13 @@ namespace myPortfolio.Models
         private string _folder;
         private string _exePath;
 
+        /// <summary>
+        /// Constructor for class <c>App</c>.
+        /// </summary>
+        /// <param name="name">Name of the application.</param>
+        /// <param name="description">Description of application.</param>
+        /// <param name="folder">Name of the folder.</param>
+        /// <param name="exePath">Path of the ".exe" file within the folder.</param>
         public App(string name, string description, string folder, string exePath)
         {
             _name = name;
@@ -46,16 +56,21 @@ namespace myPortfolio.Models
         private static readonly string _appFolder = Path.Combine(Environment.CurrentDirectory, "..", "..", "..", "Apps");
 
         /*
-         * HELPER FUNCTIONS
-         */
-
-
-        /*
          * CRUD OPERATIONS
          */
 
+        /// <summary>
+        /// Creates an object of the application.
+        /// Adds information regarding created app into the database.
+        /// </summary>
+        /// <param name="name">Name of the application.</param>
+        /// <param name="description">Description of application.</param>
+        /// <param name="folder">Name of the folder.</param>
+        /// <param name="exePath">Path of the ".exe" file within the folder.</param>
+        /// <returns>An object of the created app.</returns>
         private static App CreateApp(string name, string description, string folder, string exePath)
         {
+            // Add app into database
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
@@ -66,6 +81,7 @@ namespace myPortfolio.Models
 
             reader.Read();
 
+            // Create added app as object
             object[] values = new object[reader.FieldCount];
             int num = reader.GetValues(values);
 
@@ -75,6 +91,10 @@ namespace myPortfolio.Models
             return app;
         }
 
+        /// <summary>
+        /// Retrieves information regarding apps from the databse.
+        /// </summary>
+        /// <returns>List of apps within database.</returns>
         private static List<App> ReadApps()
         {
 
@@ -89,6 +109,7 @@ namespace myPortfolio.Models
 
             List<App> apps = new List<App>();
 
+            // For each app within database
             while (reader.Read())
             {
 
@@ -97,6 +118,7 @@ namespace myPortfolio.Models
                 string folder = reader.GetString(3);
                 string exePath = reader.GetString(4);
 
+                // Add app to static apps variable.
                 apps.Add(new App(name, description, folder, exePath));
             }
 
@@ -108,6 +130,9 @@ namespace myPortfolio.Models
          * BUSINESS LOGIC
          */
 
+        /// <summary>
+        /// Executes application.
+        /// </summary>
         public void ExecuteApp()
         {
             //string filename = string.Format("../Apps/{0}{1}", _folder, _exePath);
@@ -117,6 +142,12 @@ namespace myPortfolio.Models
             Process.Start(filename);
         }
 
+        /// <summary>
+        /// Copies files from given source path to the given target path.
+        /// Target path directory will be created upon calling this method.
+        /// </summary>
+        /// <param name="sourcePath">Path of source files.</param>
+        /// <param name="targetPath">Name of target destination for copied files.</param>
         private static void CopyFiles(string sourcePath, string targetPath)
         {
 
@@ -136,6 +167,15 @@ namespace myPortfolio.Models
             }
         }
 
+        /// <summary>
+        /// Adds created app into database.
+        /// </summary>
+        /// <param name="name">Name of the application.</param>
+        /// <param name="description">Description of application.</param>
+        /// <param name="folder">Name of the folder.</param>
+        /// <param name="exePath">Path of the ".exe" file within the folder.</param>
+        /// <returns><see langword="true"/> if creation of the app has been successful.
+        /// <see langword="false"/> if creation of the app has been unsuccessful.</returns>
         public static bool AddApp(string name, string description, string sourceFolder, string sourceExePath)
         {
             // IF STRING IS VALID PATH
