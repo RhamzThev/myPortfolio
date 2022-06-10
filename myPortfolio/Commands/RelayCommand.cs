@@ -6,6 +6,10 @@ using System.Windows.Input;
 
 namespace myPortfolio.Commands
 {
+    /// <summary>
+    /// Class <c>RelayCommand</c> inherits <c>ICommand</c>. 
+    /// Has the ability to relay an action passed into its constructor.
+    /// </summary>
     public class RelayCommand : ICommand
     {
         #region Fields 

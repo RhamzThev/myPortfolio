@@ -8,10 +8,18 @@ using System.Windows;
 
 namespace myPortfolio.Commands
 {
+    /// <summary>
+    /// Class <c>UpdateNameCommand</c> inherits <c>BaseCommand</c>. 
+    /// Executes command to update the user's name. 
+    /// </summary>
     public class UpdateNameCommand : BaseCommand
     {
         private readonly ProfileViewModel _profileViewModel;
 
+        /// <summary>
+        /// Constructor for <c>UpdateNameCommand</c>. 
+        /// </summary>
+        /// <param name="profileViewModel"></param>
         public UpdateNameCommand(ProfileViewModel profileViewModel)
         {
             _profileViewModel = profileViewModel;

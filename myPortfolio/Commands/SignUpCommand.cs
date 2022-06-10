@@ -9,11 +9,20 @@ using System.Windows;
 
 namespace myPortfolio.Commands
 {
+    /// <summary>
+    /// Class <c>SignUpCommand</c> inherits <c>BaseCommand</c>. 
+    /// Executes command to sign up a new account.
+    /// </summary>
     public class SignUpCommand : BaseCommand
     {
         private readonly SignUpViewModel _signUpViewModel;
         private readonly Navigation _navigation;
 
+        /// <summary>
+        /// Constructor for <c>SignUpCommand</c>. 
+        /// </summary>
+        /// <param name="signUpViewModel"></param>
+        /// <param name="navigation"></param>
         public SignUpCommand(SignUpViewModel signUpViewModel, Navigation navigation)
         {
             _signUpViewModel = signUpViewModel;

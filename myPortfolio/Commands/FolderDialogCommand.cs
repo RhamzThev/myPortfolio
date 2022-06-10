@@ -6,11 +6,17 @@ using System.Text;
 
 namespace myPortfolio.Commands
 {
+    /// <summary>
+    /// Class <c>FolderDialogCommand</c> inherits <c>BaseCommand</c>. Executes command to open the folder dialog.
+    /// </summary>
     public class FolderDialogCommand : BaseCommand
     {
-
         private readonly AddAppViewModel _addAppViewModel;
 
+        /// <summary>
+        /// Constructor for <c>FolderDialogCommand</c>. 
+        /// </summary>
+        /// <param name="addAppViewModel"></param>
         public FolderDialogCommand(AddAppViewModel addAppViewModel)
         {
             _addAppViewModel = addAppViewModel;

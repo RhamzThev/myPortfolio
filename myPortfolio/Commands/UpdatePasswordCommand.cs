@@ -8,11 +8,19 @@ using System.Text;
 
 namespace myPortfolio.Commands
 {
+    /// <summary>
+    /// Class <c>UpdatePasswordCommand</c> inherits <c>BaseCommand</c>. 
+    /// Executes command to open the confirmation popup to update the password. 
+    /// </summary>
     public class UpdatePasswordCommand : BaseCommand
     {
 
         private ProfileViewModel _profileViewModel;
 
+        /// <summary>
+        /// Constructor for <c>UpdatePasswordCommand</c>. 
+        /// </summary>
+        /// <param name="profileViewModel"></param>
         public UpdatePasswordCommand(ProfileViewModel profileViewModel)
         {
             _profileViewModel = profileViewModel;

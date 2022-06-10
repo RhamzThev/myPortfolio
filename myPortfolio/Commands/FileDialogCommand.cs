@@ -6,11 +6,17 @@ using myPortfolio.ViewModels;
 
 namespace myPortfolio.Commands
 {
+    /// <summary>
+    /// Class <c>FileDialogCommand</c> inherits <c>BaseCommand</c>. Executes command to open the file dialog. 
+    /// </summary>
     public class FileDialogCommand : BaseCommand
     {
-
         private readonly AddAppViewModel _addAppViewModel;
 
+        /// <summary>
+        /// Constructor for <c>FileDialogCommand</c>. 
+        /// </summary>
+        /// <param name="addAppViewModel"></param>
         public FileDialogCommand(AddAppViewModel addAppViewModel)
         {
             _addAppViewModel = addAppViewModel;
