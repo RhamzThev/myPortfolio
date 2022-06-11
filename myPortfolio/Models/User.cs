@@ -8,6 +8,9 @@ using myPortfolio.Models.Database;
 
 namespace myPortfolio.Models
 {
+    /// <summary>
+    /// Represents a user of the application.
+    /// </summary>
     public class User : Database.Database
     {
 
@@ -37,7 +40,12 @@ namespace myPortfolio.Models
             set { _isGuest = value; }
         }
 
-
+        /// <summary>
+        /// Constructor for <c>User</c>.
+        /// Assumes user is not a guest.
+        /// </summary>
+        /// <param name="name">Name of the user.</param>
+        /// <param name="username">Username of the user.</param>
         private User(string name, string username)
         {
             _username = username;
@@ -45,6 +53,12 @@ namespace myPortfolio.Models
             _isGuest = false;
         }
 
+        /// <summary>
+        /// Constructor for <c>User</c>.
+        /// </summary>
+        /// <param name="name">Name of the user.</param>
+        /// <param name="username">Username of the user.</param>
+        /// <param name="isGuest">Determines if user is a guest.</param>
         private User(string name, string username, bool isGuest)
         {
             _username = username;
@@ -57,7 +71,11 @@ namespace myPortfolio.Models
          * HELPER FUCNTIONS
          */
 
-
+        /// <summary>
+        /// Determines if the given username exists from databse.
+        /// </summary>
+        /// <param name="username">Username used to determine if it exists within databse.</param>
+        /// <returns><see langword="true"/> if username exists. <see langword="false"/> if otherwise.</returns>
         private static bool UsernameExists(string username)
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
@@ -77,6 +95,12 @@ namespace myPortfolio.Models
             return usernameExists;
         }
 
+        /// <summary>
+        /// Determines if given credentials are valid and they exist.
+        /// </summary>
+        /// <param name="username">Username that possibly exists within database.</param>
+        /// <param name="password">Corresponding password to given username.</param>
+        /// <returns><see langword="true"/> if credentials are valid. <see langword="false"/> if otherwise.</returns>
         private static bool ValidCredentials(string username, string password)
         {
             // IF USERNAME EXISTS
@@ -119,30 +143,44 @@ namespace myPortfolio.Models
          * CRUD OPERATIONS
          */
 
+        // CREATE
 
-        // CREATE (INSERT INTO)
+        /// <summary>
+        /// Inserts new user information into database.
+        /// </summary>
+        /// <param name="name">Name of the user.</param>
+        /// <param name="username">Username of the user.</param>
+        /// <param name="password">Password for created user.</param>
+        /// <returns>The newly created user.</returns>
         private static User CreateUser(string name, string username, string password)
         {
+            // Open DB
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
             conn.Open();
 
+            // Insert new user information into database
             string cmdText = string.Format("INSERT INTO users (name, username, password) VALUES ('{0}', '{1}', '{2}') RETURNING *", name, username, password);
-
             using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
+
+            // Retrived inserted user information
             using NpgsqlDataReader reader = cmd.ExecuteReader();
-
             reader.Read();
-
             object[] values = new object[reader.FieldCount];
             int num = reader.GetValues(values);
-
             if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
 
+            // Return User object of created user.
             User user = new User((string)values[1], (string)values[3]);
             return user;
         }
 
-        // READ (SELECT)
+        // READ
+
+        /// <summary>
+        /// Retrieves user from database based on username.
+        /// </summary>
+        /// <param name="username">Username that'll be prompted into database.</param>
+        /// <returns>a <c>User</c> object if user is retrieved.</returns>
         private static User ReadUserByUsername(string username)
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
@@ -167,6 +205,12 @@ namespace myPortfolio.Models
         }
 
         // UPDATE (UPDATE)
+
+        /// <summary>
+        /// Updates the name of the current user.
+        /// </summary>
+        /// <param name="name">The updated name.</param>
+        /// <returns>The user with the updated information.</returns>
         private static User UpdateUserName(string name)
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
@@ -188,6 +232,10 @@ namespace myPortfolio.Models
             return user;
         }
 
+        /// <summary>
+        /// Updates the password of the current user.
+        /// </summary>
+        /// <param name="password">The updated password.</param>
         private static void UpdateUserPassword(string password)
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
@@ -200,7 +248,12 @@ namespace myPortfolio.Models
 
             if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
         }
+
         // DELETE (DELETE FROM)
+
+        /// <summary>
+        /// Deletes current user from database.
+        /// </summary>
         private static void DeleteUser()
         {
             using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
@@ -218,6 +271,12 @@ namespace myPortfolio.Models
          * BUSINESS LOGIC
          */
 
+        /// <summary>
+        /// Logs user into system.
+        /// </summary>
+        /// <param name="username">The attempted username.</param>
+        /// <param name="password">The attempted password.</param>
+        /// <returns><see langword="true"/> if User logged in successfully. <see langword="false"/> if otherwise.</returns>
         public static bool LogIn(string username, string password)
         {
             // IF VALID CREDENTIALS
@@ -231,11 +290,22 @@ namespace myPortfolio.Models
             return false;
         }
 
+        /// <summary>
+        /// Signs in user as a guest.
+        /// </summary>
         public static void SignInGuest()
         {
             _user = new User("Guest", "Guest", true);
         }
 
+        /// <summary>
+        /// Signs user up with a new account.
+        /// </summary>
+        /// <param name="name">Name of new user.</param>
+        /// <param name="username">Username of created user.</param>
+        /// <param name="password">Password for new user.</param>
+        /// <param name="repeatPassword">A repeated password for the new user.</param>
+        /// <returns><see langword="true"/> if the user is signed in correctly. <see langword="false"/> if otherwise.</returns>
         public static bool SignUp(string name, string username, string password, string repeatPassword)
         {
             // IF USERNAME IS NOT TAKEN
@@ -251,12 +321,19 @@ namespace myPortfolio.Models
             return false;
         }
 
-
+        /// <summary>
+        /// Signs user out of application.
+        /// </summary>
         public static void SignOut()
         {
             _user = null;
         }
 
+        /// <summary>
+        /// Updates name of current user.
+        /// </summary>
+        /// <param name="name">The newly updated name</param>
+        /// <returns><see langword="true"/> if the name is updated successfully. <see langword="false"/> if otherwise.</returns>
         public static bool UpdateName(string name)
         {
             string messageBox = string.Format("This will update name from {0} to {1}", User.Name, name);
@@ -270,6 +347,12 @@ namespace myPortfolio.Models
             return false;
         }
 
+        /// <summary>
+        /// Updates password of current user.
+        /// </summary>
+        /// <param name="password">The newly updated password.</param>
+        /// <param name="previousPassword">The previous (current) password of the current user.</param>
+        /// <returns></returns>
         public static bool UpdatePassword(string password, string previousPassword)
         {
             if(ValidCredentials(_username, previousPassword))
@@ -284,6 +367,10 @@ namespace myPortfolio.Models
             return false;
         }
 
+        /// <summary>
+        /// Deletes current user from database.
+        /// </summary>
+        /// <returns><see langword="true"/> if user is successfully deleted. <see langword="false"/> if otherwise.</returns>
         public static bool DeleteAccount()
         {
             string messageBox = "Are you sure you want to delete your account? This action will be irreversible.";
