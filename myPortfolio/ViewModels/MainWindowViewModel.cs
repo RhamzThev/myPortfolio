@@ -9,6 +9,10 @@ using System.Windows.Input;
 
 namespace myPortfolio.ViewModels
 {
+    /// <summary>
+    /// Class <c>MainWindowViewModel</c> inherits <c>BaseViewModel</c>. Handles the Data binding for <c>MainWindow</c>.
+    /// Reference of navigation contained here.
+    /// </summary>
     public class MainWindowViewModel : BaseViewModel
     {
         public Navigation _navigation;
@@ -49,6 +53,11 @@ namespace myPortfolio.ViewModels
         public ICommand MaximizeCommand { get; } 
         public ICommand CloseCommand { get; }
 
+        /// <summary>
+        /// Cosntructor for <c>MainWindowViewModel</c>.
+        /// Initial view model is defined here.
+        /// </summary>
+        /// <param name="navigation">MainWindowViewModel</param>
         public MainWindowViewModel(Navigation navigation)
         {
             _navigation = navigation;
