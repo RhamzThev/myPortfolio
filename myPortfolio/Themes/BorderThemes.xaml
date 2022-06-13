@@ -1,5 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- KIND OF WHITE BORDER -->
+    
     <Style x:Key="backgroundBorder" TargetType="{x:Type Border}">
         <Setter Property="CornerRadius" Value="20"/>
         <Setter Property="Background">
@@ -14,6 +17,8 @@
         </Setter>
     </Style>
 
+    <!--GRADIENT BORDER-->
+    
     <Style x:Key="wallpaperBorder" TargetType="{x:Type Border}">
         <Setter Property="CornerRadius" Value="20"/>
         <Setter Property="Background">
@@ -26,6 +31,8 @@
         </Setter>
     </Style>
 
+    <!--GRADIENT BORDER(?) FOR POPUP WINDOWS-->
+    
     <Style x:Key="popupWallpaperBorder" TargetType="{x:Type Border}">
         <Setter Property="CornerRadius" Value="20"/>
         <Setter Property="Background">
