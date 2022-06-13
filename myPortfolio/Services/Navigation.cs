@@ -5,6 +5,9 @@ using System.Text;
 
 namespace myPortfolio.Services
 {
+    /// <summary>
+    /// Manages the navigation between view models.
+    /// </summary>
     public class Navigation
     {
 
@@ -22,6 +25,9 @@ namespace myPortfolio.Services
             }
         }
 
+        /// <summary>
+        /// A method that's called when the current view model has changed.
+        /// </summary>
         private void OnCurrentViewModelChanged()
         {
             CurrentViewModelChanged?.Invoke();
