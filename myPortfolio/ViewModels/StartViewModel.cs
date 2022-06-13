@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 namespace myPortfolio.ViewModels
 {
+    /// <summary>
+    /// Class <c>StartViewModel</c> inherits <c>BaseViewModel</c>. Handles the Data binding for StartView.
+    /// </summary>
     public class StartViewModel : BaseViewModel
     {
         private string _username;
@@ -29,6 +32,10 @@ namespace myPortfolio.ViewModels
         public ICommand SignInGuestCommand { get; }
         public ICommand SignUpCommand { get; }
 
+        /// <summary>
+        /// Constructor for <c>StartViewModel</c>.
+        /// </summary>
+        /// <param name="navigation">Class used to navigate across various view models.</param>
         public StartViewModel(Navigation navigation)
         {
             LogInCommand = new LogInCommand(this, navigation);
