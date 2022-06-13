@@ -9,6 +9,9 @@ using System.Windows.Input;
 
 namespace myPortfolio.ViewModels
 {
+    /// <summary>
+    /// Class <c>HomeViewModel</c> inherits <c>BaseViewModel</c>. Handles the Data binding for HomeView.
+    /// </summary>
     public class HomeViewModel : BaseViewModel
     {
 
@@ -58,6 +61,10 @@ namespace myPortfolio.ViewModels
         public ICommand ExecuteAppCommand { get; }
         public ICommand SignOutCommand { get; }
 
+        /// <summary>
+        /// Constructor for <c>HomeViewModel</c>.
+        /// </summary>
+        /// <param name="navigation">Class used to navigate across various view models.</param>
         public HomeViewModel(Navigation navigation)
         {
             ProfileCommand = new ProfileCommand(navigation);
