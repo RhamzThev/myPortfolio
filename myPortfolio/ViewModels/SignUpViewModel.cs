@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 namespace myPortfolio.ViewModels
 {
+    /// <summary>
+    /// Class <c>SignUpViewModel</c> inherits <c>BaseViewModel</c>. Handles the Data binding for SignUpView.
+    /// </summary>
     public class SignUpViewModel : BaseViewModel
     {
 
@@ -52,6 +55,10 @@ namespace myPortfolio.ViewModels
         public ICommand BackCommand { get; }
         public ICommand SignUpCommand { get; }
 
+        /// <summary>
+        /// Constructor for <c>SignUpViewModel</c>.
+        /// </summary>
+        /// <param name="navigation">Class used to navigate across various view models.</param>
         public SignUpViewModel(Navigation navigation)
         {
             BackCommand = new NavigateCommand<StartViewModel>(navigation, () => new StartViewModel(navigation));
