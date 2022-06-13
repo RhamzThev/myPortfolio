@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace myPortfolio.Commands
 {
     /// <summary>
-    /// Class <c>BaseCommand</c> inherits <c>ICommand</c>. A Base Command class for inherited higher-level classes.
+    /// Class <c>BaseCommand</c> inherits <c>ICommand</c>. A Base Command class for inherited higher-level commands.
     /// </summary>
     public abstract class BaseCommand : ICommand
     {

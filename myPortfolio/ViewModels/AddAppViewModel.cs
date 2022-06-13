@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 namespace myPortfolio.ViewModels
 {
+    /// <summary>
+    /// Class <c>AddAppViewModel</c> inherits <c>BaseViewModel</c>. Handles the Data binding for AddAppView.
+    /// </summary>
     public class AddAppViewModel : BaseViewModel
     {
 
@@ -71,6 +74,10 @@ namespace myPortfolio.ViewModels
         public ICommand ChooseFileCommand { get; }
         public ICommand AddAppCommand { get; }
 
+        /// <summary>
+        /// Constructor for <c>AddAppViewModel</c>.
+        /// </summary>
+        /// <param name="navigation">Class used to navigate across various view models.</param>
         public AddAppViewModel(Navigation navigation)
         {
             BackCommand = new NavigateCommand<HomeViewModel>(navigation, () => new HomeViewModel(navigation));
