@@ -8,6 +8,9 @@ using System.Windows.Input;
 
 namespace myPortfolio.ViewModels
 {
+    /// <summary>
+    /// Class <c>ProfileViewModel</c> inherits <c>BaseViewModel</c>. Handles the Data binding for ProfileView.
+    /// </summary>
     public class ProfileViewModel : BaseViewModel
     {
         private string _name;
@@ -94,6 +97,10 @@ namespace myPortfolio.ViewModels
         public ICommand UpdatePasswordConfirmationCommand { get; }
         public ICommand DeleteAccountCommand { get; }
 
+        /// <summary>
+        /// Constructor for <c>ProfileViewModel</c>.
+        /// </summary>
+        /// <param name="navigation">Class used to navigate across various view models.</param>
         public ProfileViewModel(Navigation navigation)
         {
             _popupIsOpen=false;
