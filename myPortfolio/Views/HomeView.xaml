@@ -38,45 +38,70 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             Margin="50">
-                    <Button
+                    <Border
+                        Width="40"
+                        Height="40"
+                        CornerRadius="20"
+                        BorderBrush="White"
+                        BorderThickness="2.5">
+                        <Button
+                        FontSize="20"
                         Foreground="White"
                         Content="{Binding InitialName}"
                         Style="{StaticResource invisibleButton}"
-                        Command="{Binding ProfileCommand}"/>
+                        Command="{Binding ProfileCommand}">
+                        </Button>
+                    </Border>
                 </StackPanel>
 
             </Grid>
 
             <StackPanel Grid.Row="1">
-                <ListBox 
+                    <ListBox
+                    ScrollViewer.VerticalScrollBarVisibility="Visible"
                     ItemsSource="{Binding Apps}" 
                     SelectedItem="{Binding SelectedItem}"
                     Background="Transparent"
                     BorderThickness="0"
-                    Foreground="White">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <StackPanel.Background>
-                                    <SolidColorBrush Color="White" Opacity="0.25"/>
-                                </StackPanel.Background>
-                                <TextBlock
-                                    Margin="50"
-                                    Text="{Binding Name}"/>
+                    Foreground="White"
+                    Height="200">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" Width="600"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                    
+                                    <Grid.Background>
+                                        <SolidColorBrush Color="White" Opacity="0.25"/>
+                                    </Grid.Background>
+
+                                <Border
+                                        Width="125"
+                                        Height="125">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        TextAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Name}"/>
+                                </Border>
                                 <Popup IsOpen="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
                                     <Border Background="White">
                                         <local:AppView/>
                                     </Border>
                                 </Popup>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                            </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
             </StackPanel>
         </Grid>
     </Border>
