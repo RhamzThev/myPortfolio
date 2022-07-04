@@ -4,6 +4,8 @@ using myPortfolio.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace myPortfolio.ViewModels
@@ -97,6 +99,7 @@ namespace myPortfolio.ViewModels
         public ICommand UpdatePasswordConfirmationCommand { get; }
         public ICommand DeleteAccountCommand { get; }
         public ICommand SignOutCommand { get; }
+        public ICommand CancelCommand { get; }
 
         /// <summary>
         /// Constructor for <c>ProfileViewModel</c>.
@@ -113,6 +116,10 @@ namespace myPortfolio.ViewModels
             UpdatePasswordConfirmationCommand = new UpdatePasswordConfirmationCommand(this, navigation);
             DeleteAccountCommand = new DeleteAccountCommand(navigation);
             SignOutCommand = new SignOutCommand(navigation);
+            CancelCommand = new RelayCommand(o =>
+            {
+                PopupIsOpen = false;
+            });
         }
     }
 }
