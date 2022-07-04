@@ -1,4 +1,5 @@
-﻿using System;
+﻿using myPortfolio.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,6 +22,30 @@ namespace myPortfolio.Views
         public AddAppView()
         {
             InitializeComponent();
+        }
+
+        private void NameChanged(object sender, TextChangedEventArgs e)
+        {
+            if (((TextBox)sender).Text == "")
+            {
+                Miscellaneous.ChangeTextBox(sender, "Name");
+            }
+            else
+            {
+                ((TextBox)sender).Background = null;
+            }
+        }
+
+        private void DescriptionChanged(object sender, TextChangedEventArgs e)
+        {
+            if (((TextBox)sender).Text == "")
+            {
+                Miscellaneous.ChangeTextBox(sender, "Description");
+            }
+            else
+            {
+                ((TextBox)sender).Background = null;
+            }
         }
     }
 }

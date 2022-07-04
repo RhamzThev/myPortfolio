@@ -96,6 +96,7 @@ namespace myPortfolio.ViewModels
         public ICommand UpdatePasswordCommand { get; }
         public ICommand UpdatePasswordConfirmationCommand { get; }
         public ICommand DeleteAccountCommand { get; }
+        public ICommand SignOutCommand { get; }
 
         /// <summary>
         /// Constructor for <c>ProfileViewModel</c>.
@@ -111,6 +112,7 @@ namespace myPortfolio.ViewModels
             UpdatePasswordCommand = new UpdatePasswordCommand(this);
             UpdatePasswordConfirmationCommand = new UpdatePasswordConfirmationCommand(this, navigation);
             DeleteAccountCommand = new DeleteAccountCommand(navigation);
+            SignOutCommand = new SignOutCommand(navigation);
         }
     }
 }

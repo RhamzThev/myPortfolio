@@ -2,35 +2,82 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:myPortfolio.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border Width="700"
+            Height="350"
+            Style="{StaticResource backgroundBorder}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1">
-            <Button Content="{Binding Name}" Command="{Binding ProfileCommand}"/>
-            <Button Content="Add App" Command="{Binding AddAppCommand}" Visibility="{Binding Visibility}"/>
-            <ListBox ItemsSource="{Binding Apps}" SelectedItem="{Binding SelectedItem}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Name}"/>
-                            <Popup IsOpen="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
-                                <Border Background="White">
-                                    <local:AppView/>
-                                </Border>
-                            </Popup>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Button Content="Sign Out" Command="{Binding SignOutCommand}"/>
-        </StackPanel>
-    </Grid>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button 
+                    Grid.Column="1"
+                    Style="{StaticResource buttonTheme}"
+                    Margin="200, 50"
+                    Padding="50, 0"
+                    HorizontalAlignment="Center"
+                    Content="Add App"
+                    Command="{Binding AddAppCommand}" 
+                    Visibility="{Binding Visibility}"/>
+
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="50">
+                    <Button
+                        Foreground="White"
+                        Content="{Binding InitialName}"
+                        Style="{StaticResource invisibleButton}"
+                        Command="{Binding ProfileCommand}"/>
+                </StackPanel>
+
+            </Grid>
+
+            <StackPanel Grid.Row="1">
+                <ListBox 
+                    ItemsSource="{Binding Apps}" 
+                    SelectedItem="{Binding SelectedItem}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Foreground="White">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <StackPanel.Background>
+                                    <SolidColorBrush Color="White" Opacity="0.25"/>
+                                </StackPanel.Background>
+                                <TextBlock
+                                    Margin="50"
+                                    Text="{Binding Name}"/>
+                                <Popup IsOpen="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
+                                    <Border Background="White">
+                                        <local:AppView/>
+                                    </Border>
+                                </Popup>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>

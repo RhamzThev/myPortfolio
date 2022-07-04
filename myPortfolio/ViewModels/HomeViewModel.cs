@@ -15,6 +15,14 @@ namespace myPortfolio.ViewModels
     public class HomeViewModel : BaseViewModel
     {
 
+        public char InitialName
+        {
+            get
+            {
+                return User.Name[0];
+            }
+        }
+
         public string Name
         {
             get
@@ -59,7 +67,6 @@ namespace myPortfolio.ViewModels
         public ICommand ProfileCommand { get; }
         public ICommand AddAppCommand { get; }
         public ICommand ExecuteAppCommand { get; }
-        public ICommand SignOutCommand { get; }
 
         /// <summary>
         /// Constructor for <c>HomeViewModel</c>.
@@ -70,7 +77,6 @@ namespace myPortfolio.ViewModels
             ProfileCommand = new ProfileCommand(navigation);
             AddAppCommand = new NavigateCommand<AddAppViewModel>(navigation, () => new AddAppViewModel(navigation));
             ExecuteAppCommand = new ExecuteAppCommand(this);
-            SignOutCommand = new SignOutCommand(navigation);
         }
     }
 }

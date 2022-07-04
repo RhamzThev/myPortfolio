@@ -3,51 +3,124 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:myPortfolio.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border
+        Width="300"
+        Height="300"
+        Style="{StaticResource backgroundBorder}">
+        <Grid>
 
-        <StackPanel Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <Button Content="Back" Command="{Binding BackCommand}"/>
-
-            <TextBlock Text="Name"/>
-            <TextBox Text="{Binding Name}"/>
-            <TextBlock Text="Description"/>
-            <TextBox Text="{Binding Description}"/>
-            <TextBlock Text="Folder"/>
-            
-            <Grid>
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="Choose Folder" Command="{Binding ChooseFolderCommand}"/>
-                <TextBlock Grid.Column="1" Text="{Binding Folder}"/>
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="20">
+                    <Button Style="{StaticResource invisibleButton}"
+                            Command="{Binding BackCommand}">
+                        <iconPacks:PackIconCodicons Kind="ChevronLeft" Foreground="White" Background="Transparent"/>
+                    </Button>
+                </StackPanel>
 
-            </Grid>
+            </Grid>            
             
-            <TextBlock Text=".exe Path"/>
+            <StackPanel Grid.Row="2">
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
+                <!--TITLE-->
+                <TextBlock
+                    Style="{StaticResource subtitleTheme}"
+                    Text="Add App"/>
 
-                <Button Grid.Column="0" Content="Choose File" Command="{Binding ChooseFileCommand, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Grid.Column="1" Text="{Binding File, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--NAME-->
+                <StackPanel Margin="50, 5">
+                    <TextBox Style="{StaticResource textBoxTheme}" 
+                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0, 0, 0, 2"
+                             TextChanged="NameChanged">
+                        <TextBox.Background>
+                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Foreground="White" 
+                                               Opacity="0.5" 
+                                               Text="Name"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
+                
+                
+                <!--DESC-->
+                <StackPanel Margin="50, 5">
+                    <TextBox Style="{StaticResource textBoxTheme}" 
+                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0, 0, 0, 2"
+                             TextChanged="DescriptionChanged">
+                        <TextBox.Background>
+                            <VisualBrush Stretch="None" AlignmentX="Left">
+                                <VisualBrush.Visual>
+                                    <TextBlock Foreground="White" 
+                                               Opacity="0.5" 
+                                               Text="Description"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <Border Width="200" Height="1" Background="White"/>
+                </StackPanel>
 
-            </Grid>
+                
+                <!--FOLDER-->
 
-            <Button Content="Add App" Command="{Binding AddAppCommand}" />
-        </StackPanel>
-    </Grid>
+                <Grid HorizontalAlignment="Center" Margin="0, 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button 
+                        Style="{StaticResource buttonTheme}"
+                        Grid.Column="0" 
+                        Content="Choose Folder" 
+                        Command="{Binding ChooseFolderCommand}"/>
+                    <TextBlock Style="{StaticResource paragraphTheme}" Grid.Column="1" Text="{Binding Folder}"/>
+
+                </Grid>
+
+                <!--EXE-->
+
+                <Grid HorizontalAlignment="Center" Margin="0, 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button 
+                        Style="{StaticResource buttonTheme}"
+                        Grid.Column="0" 
+                        Content="Choose File" 
+                        Command="{Binding ChooseFileCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Style="{StaticResource paragraphTheme}" Grid.Column="1" Text="{Binding File, UpdateSourceTrigger=PropertyChanged}"/>
+
+                </Grid>
+
+                <Button Margin="100, 5" Style="{StaticResource buttonTheme}" Content="Add App" Command="{Binding AddAppCommand}" />
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>
