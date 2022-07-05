@@ -79,6 +79,20 @@ namespace myPortfolio.ViewModels
             }
         }
 
+        //private bool _isEnabled;
+        public bool IsEnabled
+        {
+            get
+            {
+                return !PopupIsOpen;
+            }
+            //set
+            //{
+            //    _isEnabled = value;
+            //    OnPropertyChanged(nameof(IsEnabled));
+            //}
+        }
+
         private string _displayName;
         public string DisplayName
         {
@@ -107,7 +121,9 @@ namespace myPortfolio.ViewModels
         /// <param name="navigation">Class used to navigate across various view models.</param>
         public ProfileViewModel(Navigation navigation)
         {
-            _popupIsOpen=false;
+            _popupIsOpen = false;
+            //_isEnabled = true;
+
             _displayName = String.Format("Change Name ({0})", User.Name);
 
             BackCommand = new NavigateCommand<HomeViewModel>(navigation, () => new HomeViewModel(navigation));
@@ -119,6 +135,7 @@ namespace myPortfolio.ViewModels
             CancelCommand = new RelayCommand(o =>
             {
                 PopupIsOpen = false;
+                //IsEnabled = true;
             });
         }
     }

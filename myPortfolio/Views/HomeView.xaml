@@ -93,10 +93,14 @@
                                         VerticalAlignment="Center"
                                         Text="{Binding Name}"/>
                                 </Border>
-                                <Popup IsOpen="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}">
-                                    <Border Background="White">
-                                        <local:AppView/>
-                                    </Border>
+                                <Popup IsOpen="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
+                                       StaysOpen="False"
+                                       Placement="Center"
+                                       AllowsTransparency="True"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <local:AppView/>
                                 </Popup>
                             </Grid>
                             </DataTemplate>

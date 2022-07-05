@@ -29,6 +29,7 @@ namespace myPortfolio.Commands
         public override void Execute(object parameter)
         {
             _profileViewModel.PopupIsOpen = true;
+            //_profileViewModel.IsEnabled = false;
         }
     }
 }

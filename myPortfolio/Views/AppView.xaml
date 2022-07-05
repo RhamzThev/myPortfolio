@@ -7,8 +7,31 @@
              xmlns:ViewModels="clr-namespace:myPortfolio.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <TextBlock Text="{Binding Description}"/>
-        <Button Content="Execute" Command="{Binding Path=DataContext.ExecuteAppCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>
-    </StackPanel>
+    <Border Style="{StaticResource popupWallpaperBorder}" Width="250" Height="200">
+        <Border Width="250" Height="200" CornerRadius="20">
+            <Border.Background>
+                <SolidColorBrush Color="White" Opacity="0.5"/>
+            </Border.Background>
+            <Border.Effect>
+                <DropShadowEffect Direction="270" Opacity="0.25" BlurRadius="10"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Style="{StaticResource headerTheme}" 
+                               Text="{Binding Description}" 
+                               Margin="10"/>
+                    <Button Style="{StaticResource buttonTheme}" 
+                            Content="Execute"
+                            Margin="10"
+                            Command="{Binding Path=DataContext.ExecuteAppCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Border>
 </UserControl>

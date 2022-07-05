@@ -24,8 +24,6 @@ namespace myPortfolio.Views
         public ProfileView()
         {
             InitializeComponent();
-
-            this.Loaded += new RoutedEventHandler(UserControl_Loaded);
         }
 
         private void NameChanged(object sender, TextChangedEventArgs e)
@@ -53,23 +51,6 @@ namespace myPortfolio.Views
             else
             {
                 ((PasswordBox)sender).Background = null;
-            }
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            Window window = Window.GetWindow(this);
-
-            Popup passwordPopup = (Popup)this.FindName("passwordPopup");
-
-            if(window != null)
-            {
-                window.LocationChanged += delegate (object sender, EventArgs args)
-                {
-                    double offset = passwordPopup.HorizontalOffset;
-                    passwordPopup.HorizontalOffset = offset + 1;
-                    passwordPopup.HorizontalOffset = offset;
-                };
             }
         }
     }
