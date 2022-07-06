@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
+using System.Data.SqlClient;
 using Npgsql;
 using myPortfolio.Models.Database;
+using System.Data;
+using System.Linq;
 
 namespace myPortfolio.Models
 {
@@ -66,6 +69,10 @@ namespace myPortfolio.Models
             _isGuest = isGuest;
         }
 
+        public User()
+        {
+
+        }
 
         /*
          * HELPER FUCNTIONS
@@ -76,23 +83,32 @@ namespace myPortfolio.Models
         /// </summary>
         /// <param name="username">Username used to determine if it exists within databse.</param>
         /// <returns><see langword="true"/> if username exists. <see langword="false"/> if otherwise.</returns>
-        private static bool UsernameExists(string username)
+        private static void UsernameExists(string username, Action<bool> completionHandler)
         {
-            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-            conn.Open();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Database.Database.connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-            string cmdText = string.Format("SELECT EXISTS(SELECT 1 FROM users WHERE username = '{0}')", username);
+                    command.CommandText = "SELECT EXISTS(SELECT 1 FROM users WHERE username = @username)";
 
-            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
+                    SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
+                    usernameParam.Value = username;
+                    command.Parameters.Add(usernameParam);
 
-            reader.Read();
+                    command.Prepare();
+                    SqlDataReader reader = command.ExecuteReader();
 
-            bool usernameExists = reader.GetBoolean(0);
+                    reader.Read();
 
-            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
-
-            return usernameExists;
+                    completionHandler(reader.GetBoolean(0));
+                }
+            } catch (Exception e)
+            {
+                completionHandler(false);
+            }
         }
 
         /// <summary>
@@ -101,42 +117,49 @@ namespace myPortfolio.Models
         /// <param name="username">Username that possibly exists within database.</param>
         /// <param name="password">Corresponding password to given username.</param>
         /// <returns><see langword="true"/> if credentials are valid. <see langword="false"/> if otherwise.</returns>
-        private static bool ValidCredentials(string username, string password)
+        private static void ValidCredentials(string username, string password, Action<bool> completionHandler)
         {
-            // IF USERNAME EXISTS
-            if(UsernameExists(username))
+
+            //IF USERNAME EXISTS
+            UsernameExists(username, (bool userExists) =>
             {
-                // IF CORRECT PASSWORD "SELECT EXISTS(SELECT 1 FROM users WHERE usersUID = '{0}' AND usersPWD = '{1}')"
-                using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-                conn.Open();
-
-                string cmdText = string.Format("SELECT EXISTS(SELECT 1 FROM users WHERE username = '{0}' AND password = '{1}')", username, password);
-
-                using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-                using NpgsqlDataReader reader = cmd.ExecuteReader();
-
-                reader.Read();
-
-                bool validCredentials = reader.GetBoolean(0);
-
-                if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
-
-                if (validCredentials)
+                if(userExists)
                 {
-                    // RETURN TRUE
-                    return true;
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(Database.Database.connectionString))
+                        {
+                            connection.Open();
+                            SqlCommand command = new SqlCommand(null, connection);
+
+                            command.CommandText = "SELECT EXISTS(SELECT 1 FROM users WHERE username = @username AND password = @password)";
+
+                            SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
+                            SqlParameter passwordParam = new SqlParameter("@password", System.Data.SqlDbType.VarChar, 255);
+
+                            usernameParam.Value = username;
+                            passwordParam.Value = password;
+
+                            command.Parameters.Add(usernameParam);
+                            command.Parameters.Add(passwordParam);
+
+                            command.Prepare();
+                            SqlDataReader reader = command.ExecuteReader();
+
+                            reader.Read();
+
+                            completionHandler(reader.GetBoolean(0));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        completionHandler(false);
+                    }
+                } else
+                {
+                    completionHandler(false);
                 }
-
-                // ELSE RETURN FALSE
-                MessageBox.Show("Incorret password. Please try again.");
-                return false;
-            }
-
-            // ELSE RETURN FALSE
-            MessageBox.Show("Username does not exists. Please try again.");
-            return false;
-
-
+            });
         }
 
         /*
@@ -152,26 +175,48 @@ namespace myPortfolio.Models
         /// <param name="username">Username of the user.</param>
         /// <param name="password">Password for created user.</param>
         /// <returns>The newly created user.</returns>
-        private static User CreateUser(string name, string username, string password)
+        private static void CreateUser(string name, string username, string password, Action<User> completionHandler)
         {
-            // Open DB
-            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-            conn.Open();
+            try
+            {
+                using(SqlConnection connection = new SqlConnection(Database.Database.connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-            // Insert new user information into database
-            string cmdText = string.Format("INSERT INTO users (name, username, password) VALUES ('{0}', '{1}', '{2}') RETURNING *", name, username, password);
-            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
+                    command.CommandText = "INSERT INTO users (name, username, password) VALUES (@name, @username, @password) RETURNING *";
 
-            // Retrived inserted user information
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
-            reader.Read();
-            object[] values = new object[reader.FieldCount];
-            int num = reader.GetValues(values);
-            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+                    SqlParameter nameParam = new SqlParameter("@name", System.Data.SqlDbType.VarChar, 255);
+                    SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
+                    SqlParameter passwordParam = new SqlParameter("@password", System.Data.SqlDbType.VarChar, 255);
+                    
+                    nameParam.Value = name;
+                    usernameParam.Value = username;
+                    passwordParam.Value = password;
 
-            // Return User object of created user.
-            User user = new User((string)values[1], (string)values[3]);
-            return user;
+                    command.Parameters.Add(nameParam);
+                    command.Parameters.Add(usernameParam);
+                    command.Parameters.Add(passwordParam);
+
+                    command.Prepare();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    reader.Read();
+                    object[] values = new object[reader.FieldCount];
+                    int num = reader.GetValues(values);
+
+                    string _name = values.ElementAtOrDefault(0).ToString();
+                    string _username = values.ElementAtOrDefault(2).ToString();
+
+                    completionHandler(new User(name, username));
+
+                }
+            }
+            catch (Exception e)
+            {
+                //SOME CUSTOM EXCEPTION
+                throw;
+            }
         }
 
         // READ
@@ -181,27 +226,42 @@ namespace myPortfolio.Models
         /// </summary>
         /// <param name="username">Username that'll be prompted into database.</param>
         /// <returns>a <c>User</c> object if user is retrieved.</returns>
-        private static User ReadUserByUsername(string username)
+        private static void ReadUserByUsername(string username, Action<User> completionHandler)
         {
-            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-            conn.Open();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-            string cmdText = string.Format("SELECT * FROM users WHERE username = '{0}';", username);
+                    command.CommandText = "SELECT * FROM users WHERE username = @username;";
 
-            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
+                    SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
 
-            reader.Read();
+                    usernameParam.Value = username;
 
-            object[] values = new object[reader.FieldCount];
+                    command.Parameters.Add(usernameParam);
 
-            int num = reader.GetValues(values);
+                    command.Prepare();
+                    SqlDataReader reader = command.ExecuteReader();
 
-            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+                    reader.Read();
+                    object[] values = new object[reader.FieldCount];
+                    int num = reader.GetValues(values);
 
-            User user = new User((string)values[1], (string)values[3]);
+                    string readerName = values.ElementAtOrDefault(0).ToString();
+                    string readerUsername = values.ElementAtOrDefault(2).ToString();
 
-            return user;
+                    completionHandler(new User(readerName, readerUsername));
+
+                }
+            }
+            catch (Exception e)
+            {
+                // SOME CUSTOM EX
+                throw;
+            }
         }
 
         // UPDATE (UPDATE)
@@ -211,25 +271,45 @@ namespace myPortfolio.Models
         /// </summary>
         /// <param name="name">The updated name.</param>
         /// <returns>The user with the updated information.</returns>
-        private static User UpdateUserName(string name)
+        private static void UpdateUserName(string name, Action<User> completionHandler)
         {
-            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-            conn.Open();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Database.Database.connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-            string cmdText = string.Format("UPDATE users SET name = '{0}' WHERE username = '{1}' RETURNING *", name, _username);
+                    command.CommandText = "UPDATE users SET name = @name WHERE username = @username RETURNING *";
 
-            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
+                    SqlParameter nameParam = new SqlParameter("@name", SqlDbType.VarChar, 255);
+                    SqlParameter usernameParam = new SqlParameter("@username", SqlDbType.VarChar, 255);
 
-            reader.Read();
+                    nameParam.Value = name;
+                    usernameParam.Value = _username;
 
-            object[] values = new object[reader.FieldCount];
-            int num = reader.GetValues(values);
+                    command.Parameters.Add(nameParam);
+                    command.Parameters.Add(usernameParam);
 
-            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+                    command.Prepare();
+                    SqlDataReader reader = command.ExecuteReader();
 
-            User user = new User((string)values[1], (string)values[3]);
-            return user;
+                    reader.Read();
+                    object[] values = new object[reader.FieldCount];
+                    int num = reader.GetValues(values);
+
+                    string readerName = values.ElementAtOrDefault(0).ToString();
+                    string readerUsername = values.ElementAtOrDefault(2).ToString();
+
+                    completionHandler(new User(readerName, readerUsername));
+
+                }
+            }
+            catch (Exception e)
+            {
+                // SOME CUSTOM EX
+                throw;
+            }
         }
 
         /// <summary>
@@ -238,15 +318,34 @@ namespace myPortfolio.Models
         /// <param name="password">The updated password.</param>
         private static void UpdateUserPassword(string password)
         {
-            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-            conn.Open();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Database.Database.connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-            string cmdText = string.Format("UPDATE users SET password = '{0}' WHERE username = '{1}' RETURNING *", password, _username);
+                    command.CommandText = "UPDATE users SET password = @password WHERE username = @username RETURNING *";
 
-            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            cmd.ExecuteNonQuery();
+                    SqlParameter passwordParam = new SqlParameter("@password", SqlDbType.VarChar, 255);
+                    SqlParameter usernameParam = new SqlParameter("@username", SqlDbType.VarChar, 255);
 
-            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+                    usernameParam.Value = _username;
+                    passwordParam.Value = password;
+
+                    command.Parameters.Add(usernameParam);
+                    command.Parameters.Add(passwordParam);
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception e)
+            {
+                //SOME CUSTOM EX
+                throw;
+            }
         }
 
         // DELETE (DELETE FROM)
@@ -256,15 +355,33 @@ namespace myPortfolio.Models
         /// </summary>
         private static void DeleteUser()
         {
-            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-            conn.Open();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Database.Database.connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-            string cmdText = string.Format("DELETE FROM users WHERE username = '{0}'", _username);
+                    command.CommandText = "DELETE FROM users WHERE username = @username";
 
-            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            cmd.ExecuteNonQuery();
+                    SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
 
-            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+                    usernameParam.Value = _username;
+
+                    command.Parameters.Add(usernameParam);
+
+                    command.Prepare();
+
+                    command.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception)
+            {
+                //SOME EX
+                throw;
+            }
+
         }
 
         /*
@@ -277,17 +394,22 @@ namespace myPortfolio.Models
         /// <param name="username">The attempted username.</param>
         /// <param name="password">The attempted password.</param>
         /// <returns><see langword="true"/> if User logged in successfully. <see langword="false"/> if otherwise.</returns>
-        public static bool LogIn(string username, string password)
+        public static void LogIn(string username, string password, Action<bool> completionHandler)
         {
             // IF VALID CREDENTIALS
-            if (ValidCredentials(username, password))
-            {
-                // RETURN USER WITH INFO
-                _user = ReadUserByUsername(username);
-                return true;
-            }
-            // ELSE RETURN NULL
-            return false;
+            ValidCredentials(username, password, (bool isLoggedInState) => {
+                if (isLoggedInState)
+                {
+                    // RETURN USER WITH INFO
+                    ReadUserByUsername(username, (User user) =>
+                    {
+                        _user = user;
+                        completionHandler(true);
+                    });
+
+                    // ELSE RETURN FALSE
+                } else { completionHandler(false); }
+            });
         }
 
         /// <summary>
@@ -306,19 +428,27 @@ namespace myPortfolio.Models
         /// <param name="password">Password for new user.</param>
         /// <param name="repeatPassword">A repeated password for the new user.</param>
         /// <returns><see langword="true"/> if the user is signed in correctly. <see langword="false"/> if otherwise.</returns>
-        public static bool SignUp(string name, string username, string password, string repeatPassword)
+        public static void SignUp(string name, string username, string password, string repeatPassword, Action<bool> completionHandler)
         {
             // IF USERNAME IS NOT TAKEN
-            if(!UsernameExists(username))
+            UsernameExists(username, (bool accountExists) =>
             {
-                // RETURN CREATED USER
-                _user = CreateUser(name, username, password);
-                return true;
-            }
-
-            // ELSE RETURN FALSE
-            MessageBox.Show("Username is taken. Please try again.");
-            return false;
+                if (!accountExists)
+                {
+                    // RETURN CREATED USER
+                    CreateUser(name, username, password, (User user) =>
+                    {
+                        _user = user;
+                        completionHandler(true);
+                    });
+                }
+                else
+                {
+                    // ELSE RETURN FALSE
+                    MessageBox.Show("Username is taken. Please try again.");
+                    completionHandler(false);
+                }
+            });
         }
 
         /// <summary>
@@ -334,17 +464,22 @@ namespace myPortfolio.Models
         /// </summary>
         /// <param name="name">The newly updated name</param>
         /// <returns><see langword="true"/> if the name is updated successfully. <see langword="false"/> if otherwise.</returns>
-        public static bool UpdateName(string name)
+        public static void UpdateName(string name, Action<bool> completionHandler)
         {
             string messageBox = string.Format("This will update name from {0} to {1}", User.Name, name);
             MessageBoxResult messageBoxResult = MessageBox.Show(messageBox, "Update Name", MessageBoxButton.OKCancel); 
 
             if (messageBoxResult == MessageBoxResult.OK)
             {
-                _user = UpdateUserName(name);
-                return true;
+                UpdateUserName(name, (User user) =>
+                {
+                    _user = user;
+                    completionHandler(true);
+                });
+            } else
+            {
+                completionHandler(false);
             }
-            return false;
         }
 
         /// <summary>
@@ -353,18 +488,21 @@ namespace myPortfolio.Models
         /// <param name="password">The newly updated password.</param>
         /// <param name="previousPassword">The previous (current) password of the current user.</param>
         /// <returns></returns>
-        public static bool UpdatePassword(string password, string previousPassword)
+        public static void UpdatePassword(string password, string previousPassword, Action<bool> completionHandler)
         {
-            if(ValidCredentials(_username, previousPassword))
+            ValidCredentials(_username, previousPassword, (bool isValid) =>
             {
-                if(!string.Equals(password, previousPassword))
+                if (isValid && !string.Equals(password, previousPassword))
                 {
                     UpdateUserPassword(password);
-                    return true;
+                    completionHandler(true);
                 }
-                return false;
-            }
-            return false;
+                else
+                {
+                    completionHandler(false);
+                }
+
+            });
         }
 
         /// <summary>

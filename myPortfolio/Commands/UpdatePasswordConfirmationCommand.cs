@@ -35,10 +35,14 @@ namespace myPortfolio.Commands
 
             _profileViewModel.PopupIsOpen = false;
 
-            bool updatedPassword = User.UpdatePassword(password, previousPassword);
-
-            _profileViewModel.Password = "";
-            _profileViewModel.PreviousPassword = "";
+            User.UpdatePassword(password, previousPassword, (bool updatedPassword) =>
+            {
+                if(updatedPassword)
+                {
+                    _profileViewModel.Password = String.Empty;
+                    _profileViewModel.PreviousPassword = String.Empty;
+                }
+            });
 
         }
     }

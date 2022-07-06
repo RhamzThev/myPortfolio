@@ -58,13 +58,16 @@ namespace myPortfolio.Commands
             string password = _startViewModel.Password;
 
             // LOG IN THE USER
-            bool loggedIn = User.LogIn(username, password);
-
-            // GO TO MAIN PAGE
-            if(loggedIn)
+            User.LogIn(username, password, (bool loggedIn) =>
             {
-                _navigation.CurrentViewModel = new HomeViewModel(_navigation);
-            } 
+                // GO TO MAIN PAGE
+                if (loggedIn)
+                {
+                    _navigation.CurrentViewModel = new HomeViewModel(_navigation);
+                }
+            });
+
+
         }
     }
 }

@@ -65,13 +65,14 @@ namespace myPortfolio.Commands
             string repeatPassword = _signUpViewModel.RepeatPassword;
 
             // SIGN UP USER
-            bool signedUp = User.SignUp(name, username, password, repeatPassword);
-
-            // GO TO MAIN PAGE
-            if (signedUp)
+            User.SignUp(name, username, password, repeatPassword, (bool signedUp) =>
             {
-                _navigation.CurrentViewModel = new HomeViewModel(_navigation);
-            }
+                // GO TO MAIN PAGE
+                if (signedUp)
+                {
+                    _navigation.CurrentViewModel = new HomeViewModel(_navigation);
+                }
+            });
         }
     }
 }

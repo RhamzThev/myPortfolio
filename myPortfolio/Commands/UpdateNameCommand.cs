@@ -30,11 +30,11 @@ namespace myPortfolio.Commands
 
             string name = _profileViewModel.Name;
 
-            bool updatedName = User.UpdateName(name);
-
-            _profileViewModel.DisplayName = String.Format("Change Name ({0})", User.Name);
-            _profileViewModel.Name = "";
-
+            User.UpdateName(name, (bool udpatedName) =>
+            {
+                _profileViewModel.DisplayName = String.Format("Change Name ({0})", User.Name);
+                _profileViewModel.Name = "";
+            });
         }
     }
 }
