@@ -17,6 +17,10 @@ namespace myPortfolio.Models
     public class User : Database.Database
     {
 
+        private static readonly int NAME_INDEX = 1;
+        private static readonly int PASSWORD_INDEX = 2;
+        private static readonly int USERNAME_INDEX = 3;
+
         private static User _user;
 
         private static string _name;
@@ -184,7 +188,7 @@ namespace myPortfolio.Models
                     connection.Open();
                     SqlCommand command = new SqlCommand(null, connection);
 
-                    command.CommandText = "INSERT INTO users (name, username, password) VALUES (@name, @username, @password) RETURNING *";
+                    command.CommandText = "INSERT INTO users (name, username, password) OUTPUT INSERTED.* VALUES (@name, @username, @password)";
 
                     SqlParameter nameParam = new SqlParameter("@name", System.Data.SqlDbType.VarChar, 255);
                     SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
@@ -205,10 +209,10 @@ namespace myPortfolio.Models
                     object[] values = new object[reader.FieldCount];
                     int num = reader.GetValues(values);
 
-                    string _name = values.ElementAtOrDefault(0).ToString();
-                    string _username = values.ElementAtOrDefault(2).ToString();
+                    string readerName = values.ElementAtOrDefault(NAME_INDEX).ToString();
+                    string readerUsername = values.ElementAtOrDefault(USERNAME_INDEX).ToString();
 
-                    completionHandler(new User(name, username));
+                    completionHandler(new User(readerName, readerUsername));
 
                 }
             }
@@ -250,8 +254,8 @@ namespace myPortfolio.Models
                     object[] values = new object[reader.FieldCount];
                     int num = reader.GetValues(values);
 
-                    string readerName = values.ElementAtOrDefault(0).ToString();
-                    string readerUsername = values.ElementAtOrDefault(2).ToString();
+                    string readerName = values.ElementAtOrDefault(NAME_INDEX).ToString();
+                    string readerUsername = values.ElementAtOrDefault(USERNAME_INDEX).ToString();
 
                     completionHandler(new User(readerName, readerUsername));
 
@@ -280,7 +284,10 @@ namespace myPortfolio.Models
                     connection.Open();
                     SqlCommand command = new SqlCommand(null, connection);
 
-                    command.CommandText = "UPDATE users SET name = @name WHERE username = @username RETURNING *";
+                    command.CommandText = @"IF EXISTS(SELECT 1 FROM users WHERE username = 'rhamzthev')
+                        BEGIN SELECT CAST(1 AS BIT) END
+                        ELSE
+                        BEGIN SELECT CAST(0 AS BIT) END";
 
                     SqlParameter nameParam = new SqlParameter("@name", SqlDbType.VarChar, 255);
                     SqlParameter usernameParam = new SqlParameter("@username", SqlDbType.VarChar, 255);
@@ -298,8 +305,8 @@ namespace myPortfolio.Models
                     object[] values = new object[reader.FieldCount];
                     int num = reader.GetValues(values);
 
-                    string readerName = values.ElementAtOrDefault(0).ToString();
-                    string readerUsername = values.ElementAtOrDefault(2).ToString();
+                    string readerName = values.ElementAtOrDefault(NAME_INDEX).ToString();
+                    string readerUsername = values.ElementAtOrDefault(USERNAME_INDEX).ToString();
 
                     completionHandler(new User(readerName, readerUsername));
 
@@ -325,7 +332,7 @@ namespace myPortfolio.Models
                     connection.Open();
                     SqlCommand command = new SqlCommand(null, connection);
 
-                    command.CommandText = "UPDATE users SET password = @password WHERE username = @username RETURNING *";
+                    command.CommandText = "UPDATE users SET password = @password WHERE username = @username OUTPUT UPDATED.*";
 
                     SqlParameter passwordParam = new SqlParameter("@password", SqlDbType.VarChar, 255);
                     SqlParameter usernameParam = new SqlParameter("@username", SqlDbType.VarChar, 255);
@@ -362,7 +369,7 @@ namespace myPortfolio.Models
                     connection.Open();
                     SqlCommand command = new SqlCommand(null, connection);
 
-                    command.CommandText = "DELETE FROM users WHERE username = @username";
+                    command.CommandText = "DELETE FROM users WHERE username = @username"; 
 
                     SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
 

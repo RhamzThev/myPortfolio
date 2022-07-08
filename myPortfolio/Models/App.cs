@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,12 @@ namespace myPortfolio.Models
     /// </summary>
     public class App
     {
+
+        private static readonly int NAME_INDEX = 1;
+        private static readonly int DESC_INDEX = 4;
+        private static readonly int FOLDER_INDEX = 2;
+        private static readonly int EXE_INDEX = 3;
+
         private string _name;
 
         public string Name
@@ -68,27 +75,53 @@ namespace myPortfolio.Models
         /// <param name="folder">Name of the folder.</param>
         /// <param name="exePath">Path of the ".exe" file within the folder.</param>
         /// <returns>An object of the created app.</returns>
-        private static App CreateApp(string name, string description, string folder, string exePath)
+        private static void CreateApp(string name, string description, string folder, string exePath, Action<App> completionHandler)
         {
-            // Add app into database
-            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-            conn.Open();
 
-            string cmdText = string.Format("INSERT INTO apps (name, description, folder, exe_path) VALUES ('{0}', '{1}', '{2}', '{3}') RETURNING *", name, description, folder, exePath);
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Database.Database.connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
+                    command.CommandText = "INSERT INTO apps (name, description, folder, exe_path) OUTPUT INSERTED.* VALUES (@name, @description, @folder, @exe_path)";
 
-            reader.Read();
+                    SqlParameter nameParam = new SqlParameter("@name", System.Data.SqlDbType.VarChar, 255);
+                    SqlParameter descriptionParam = new SqlParameter("@description", System.Data.SqlDbType.VarChar, 255);
+                    SqlParameter folderParam = new SqlParameter("@folder", System.Data.SqlDbType.VarChar, 255);
+                    SqlParameter exePathParam = new SqlParameter("@exe_path", System.Data.SqlDbType.VarChar, 255);
 
-            // Create added app as object
-            object[] values = new object[reader.FieldCount];
-            int num = reader.GetValues(values);
+                    nameParam.Value = name;
+                    descriptionParam.Value = description;
+                    folderParam.Value = folder;
+                    exePathParam.Value = exePath;
 
-            if (conn.State == System.Data.ConnectionState.Open) { conn.Close(); }
+                    command.Parameters.Add(nameParam);
+                    command.Parameters.Add(descriptionParam);
+                    command.Parameters.Add(folderParam);
+                    command.Parameters.Add(exePathParam);
 
-            App app = new App((string)values[1], (string)values[2], (string)values[3], (string)values[4]);
-            return app;
+                    command.Prepare();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    reader.Read();
+                    object[] values = new object[reader.FieldCount];
+                    int num = reader.GetValues(values);
+
+                    string readerName = values.ElementAtOrDefault(NAME_INDEX).ToString();
+                    string readerDescription = values.ElementAtOrDefault(DESC_INDEX).ToString();
+                    string readerFolder = values.ElementAtOrDefault(FOLDER_INDEX).ToString();
+                    string readerExePath = values.ElementAtOrDefault(EXE_INDEX).ToString();
+
+                    completionHandler(new App(readerName, readerDescription, readerFolder, readerExePath));
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -98,32 +131,42 @@ namespace myPortfolio.Models
         private static List<App> ReadApps()
         {
 
-            // GET GAMES
-            using NpgsqlConnection conn = new NpgsqlConnection(Database.Database.connectionString);
-            conn.Open();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Database.Database.connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-            string cmdText = "SELECT * FROM apps";
+                    command.CommandText = "SELECT * FROM apps";
 
-            using NpgsqlCommand cmd = new NpgsqlCommand(cmdText, conn);
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
+                    command.Prepare();
+                    SqlDataReader reader = command.ExecuteReader();
 
-            List<App> apps = new List<App>();
+                    List<App> apps = new List<App>();
 
-            // For each app within database
-            while (reader.Read())
+                    while (reader.Read())
+                    {
+                        object[] values = new object[reader.FieldCount];
+                        int num = reader.GetValues(values);
+
+                        string readerName = values.ElementAtOrDefault(NAME_INDEX).ToString();
+                        string readerDescription = values.ElementAtOrDefault(DESC_INDEX).ToString();
+                        string readerFolder = values.ElementAtOrDefault(FOLDER_INDEX).ToString();
+                        string readerExePath = values.ElementAtOrDefault(EXE_INDEX).ToString();
+
+                        apps.Add(new App(readerName, readerDescription, readerFolder, readerExePath));
+                    }
+
+                    return apps;
+                }
+
+            }
+            catch (Exception)
             {
 
-                string name = reader.GetString(1);
-                string description = reader.GetString(2);
-                string folder = reader.GetString(3);
-                string exePath = reader.GetString(4);
-
-                // Add app to static apps variable.
-                apps.Add(new App(name, description, folder, exePath));
+                throw;
             }
-
-            return apps;
-
         }
 
         /*
@@ -193,7 +236,7 @@ namespace myPortfolio.Models
                 // CREATE AND ADD GAME TO GAMES IN C# AND POSTGRES
                 string exePath = sourceExePath.Substring(sourceFolder.Length + 1);
 
-                App app = CreateApp(name, description, name, exePath);
+                CreateApp(name, description, name, exePath, (App app) => {});
 
                 return true;
             }
