@@ -26,7 +26,7 @@ namespace myPortfolio.Views
 
         private void NameChanged(object sender, TextChangedEventArgs e)
         {
-            if (((TextBox)sender).Text == "")
+            if (string.IsNullOrEmpty(((TextBox)sender).Text))
             {
                 Miscellaneous.ChangeTextBox(sender, "Name");
             }
@@ -38,7 +38,7 @@ namespace myPortfolio.Views
 
         private void DescriptionChanged(object sender, TextChangedEventArgs e)
         {
-            if (((TextBox)sender).Text == "")
+            if (string.IsNullOrEmpty(((TextBox)sender).Text))
             {
                 Miscellaneous.ChangeTextBox(sender, "Description");
             }

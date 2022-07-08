@@ -27,7 +27,7 @@ namespace myPortfolio.Views
 
         private void NameChanged(object sender, TextChangedEventArgs e)
         {
-            if (((TextBox)sender).Text == "")
+            if (string.IsNullOrEmpty(((TextBox)sender).Text))
             {
                 Miscellaneous.ChangeTextBox(sender, "Name");
             }
@@ -39,7 +39,7 @@ namespace myPortfolio.Views
 
         private void UsernameChanged(object sender, TextChangedEventArgs e)
         {
-            if (((TextBox)sender).Text == "")
+            if (string.IsNullOrEmpty(((TextBox)sender).Text))
             {
                 Miscellaneous.ChangeTextBox(sender, "Username");
             }
@@ -54,7 +54,7 @@ namespace myPortfolio.Views
             if (this.DataContext != null)
             { ((SignUpViewModel)this.DataContext).Password = ((PasswordBox)sender).Password; }
 
-            if (((PasswordBox)sender).Password == "")
+            if (string.IsNullOrEmpty(((PasswordBox)sender).Password))
             {
                 Miscellaneous.ChangePasswordBox(sender, "Password");
             }
@@ -69,7 +69,7 @@ namespace myPortfolio.Views
             if (this.DataContext != null)
             { ((SignUpViewModel)this.DataContext).RepeatPassword = ((PasswordBox)sender).Password; }
 
-            if (((PasswordBox)sender).Password == "")
+            if (string.IsNullOrEmpty(((PasswordBox)sender).Password))
             {
                 Miscellaneous.ChangePasswordBox(sender, "Repeat Password");
             }

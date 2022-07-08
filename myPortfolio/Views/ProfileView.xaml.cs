@@ -28,7 +28,7 @@ namespace myPortfolio.Views
 
         private void NameChanged(object sender, TextChangedEventArgs e)
         {
-            if(((TextBox)sender).Text == "")
+            if(string.IsNullOrEmpty(((TextBox)sender).Text))
             {
                 string displayName = ((ProfileViewModel)this.DataContext).DisplayName;
                 Miscellaneous.ChangeTextBox(sender, displayName);
@@ -44,7 +44,7 @@ namespace myPortfolio.Views
             if (this.DataContext != null)
             { ((ProfileViewModel)this.DataContext).Password = ((PasswordBox)sender).Password; }
 
-            if(((PasswordBox)sender).Password == "")
+            if(string.IsNullOrEmpty(((PasswordBox)sender).Password))
             {
                 Miscellaneous.ChangePasswordBox(sender, "Change Password");
             }

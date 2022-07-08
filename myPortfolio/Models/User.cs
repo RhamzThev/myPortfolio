@@ -96,7 +96,10 @@ namespace myPortfolio.Models
                     connection.Open();
                     SqlCommand command = new SqlCommand(null, connection);
 
-                    command.CommandText = "SELECT EXISTS(SELECT 1 FROM users WHERE username = @username)";
+                    command.CommandText = @"IF EXISTS(SELECT 1 FROM users WHERE username = @username)
+                        BEGIN SELECT CAST(1 AS BIT) END
+                        ELSE
+                        BEGIN SELECT CAST(0 AS BIT) END";
 
                     SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
                     usernameParam.Value = username;
@@ -106,6 +109,8 @@ namespace myPortfolio.Models
                     SqlDataReader reader = command.ExecuteReader();
 
                     reader.Read();
+
+                    Console.WriteLine("Hello");
 
                     completionHandler(reader.GetBoolean(0));
                 }
@@ -136,7 +141,10 @@ namespace myPortfolio.Models
                             connection.Open();
                             SqlCommand command = new SqlCommand(null, connection);
 
-                            command.CommandText = "SELECT EXISTS(SELECT 1 FROM users WHERE username = @username AND password = @password)";
+                            command.CommandText = @"IF EXISTS(SELECT 1 FROM users WHERE username = @username AND password = @password)
+                                BEGIN SELECT CAST(1 AS BIT) END
+                                ELSE
+                                BEGIN SELECT CAST(0 AS BIT) END";
 
                             SqlParameter usernameParam = new SqlParameter("@username", System.Data.SqlDbType.VarChar, 255);
                             SqlParameter passwordParam = new SqlParameter("@password", System.Data.SqlDbType.VarChar, 255);
@@ -284,10 +292,7 @@ namespace myPortfolio.Models
                     connection.Open();
                     SqlCommand command = new SqlCommand(null, connection);
 
-                    command.CommandText = @"IF EXISTS(SELECT 1 FROM users WHERE username = 'rhamzthev')
-                        BEGIN SELECT CAST(1 AS BIT) END
-                        ELSE
-                        BEGIN SELECT CAST(0 AS BIT) END";
+                    command.CommandText = @"UPDATE users SET name = @name OUTPUT INSERTED.* WHERE username = @username";
 
                     SqlParameter nameParam = new SqlParameter("@name", SqlDbType.VarChar, 255);
                     SqlParameter usernameParam = new SqlParameter("@username", SqlDbType.VarChar, 255);
@@ -332,7 +337,7 @@ namespace myPortfolio.Models
                     connection.Open();
                     SqlCommand command = new SqlCommand(null, connection);
 
-                    command.CommandText = "UPDATE users SET password = @password WHERE username = @username OUTPUT UPDATED.*";
+                    command.CommandText = "UPDATE users SET password = @password OUTPUT INSERTED.* WHERE username = @username";
 
                     SqlParameter passwordParam = new SqlParameter("@password", SqlDbType.VarChar, 255);
                     SqlParameter usernameParam = new SqlParameter("@username", SqlDbType.VarChar, 255);
@@ -405,6 +410,7 @@ namespace myPortfolio.Models
         {
             // IF VALID CREDENTIALS
             ValidCredentials(username, password, (bool isLoggedInState) => {
+
                 if (isLoggedInState)
                 {
                     // RETURN USER WITH INFO

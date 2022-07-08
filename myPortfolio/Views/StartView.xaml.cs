@@ -29,7 +29,7 @@ namespace myPortfolio.Views
             if (this.DataContext != null)
             { ((StartViewModel)this.DataContext).Password = ((PasswordBox)sender).Password; }
 
-            if (((PasswordBox)sender).Password == "")
+            if (string.IsNullOrEmpty(((PasswordBox)sender).Password))
             {
                 ChangePasswordBox(sender, "Password");
             }
@@ -41,7 +41,7 @@ namespace myPortfolio.Views
 
         private void UsernameChanged(object sender, TextChangedEventArgs e)
         {
-            if (((TextBox)sender).Text == "")
+            if (string.IsNullOrEmpty(((TextBox)sender).Text))
             {
                 ChangeTextBox(sender, "Username");
             }
