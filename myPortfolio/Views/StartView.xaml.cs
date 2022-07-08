@@ -1,4 +1,5 @@
-﻿using myPortfolio.ViewModels;
+﻿using myPortfolio.Services;
+using myPortfolio.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,7 +32,7 @@ namespace myPortfolio.Views
 
             if (string.IsNullOrEmpty(((PasswordBox)sender).Password))
             {
-                ChangePasswordBox(sender, "Password");
+                Miscellaneous.ChangePasswordBox(sender, "Password");
             }
             else
             {
@@ -43,47 +44,12 @@ namespace myPortfolio.Views
         {
             if (string.IsNullOrEmpty(((TextBox)sender).Text))
             {
-                ChangeTextBox(sender, "Username");
+                Miscellaneous.ChangeTextBox(sender, "Username");
             }
             else
             {
                 ((TextBox)sender).Background = null;
             }
-        }
-
-        private void ChangePasswordBox(object sender, string text)
-        {
-            VisualBrush visualBrush = SetBlock(text);
-
-            // PAINT IMAGE
-            ((PasswordBox)sender).Background = visualBrush;
-        }
-
-        private void ChangeTextBox(object sender, string text)
-        {
-            VisualBrush visualBrush = SetBlock(text);
-
-            // PAINT IMAGE
-            ((TextBox)sender).Background = visualBrush;
-        }
-
-        private VisualBrush SetBlock(string text)
-        {
-            // CREATE VISUAL BRUSH
-            VisualBrush visualBrush = new VisualBrush();
-            visualBrush.Stretch = Stretch.None;
-            visualBrush.AlignmentX = AlignmentX.Left;
-
-            // CREATE VISUAL (TEXT BOX)
-            TextBlock textblock = new TextBlock();
-            textblock.Foreground = new SolidColorBrush(Colors.White);
-            textblock.Opacity = 0.5;
-            textblock.Text = text;
-
-            // SET TEXTBOX TO BE BRUSH'S VISUAL
-            visualBrush.Visual = textblock;
-
-            return visualBrush;
         }
     }
 }

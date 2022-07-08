@@ -163,14 +163,8 @@ namespace myPortfolio.Models
                             completionHandler(reader.GetBoolean(0));
                         }
                     }
-                    catch (Exception e)
-                    {
-                        completionHandler(false);
-                    }
-                } else
-                {
-                    completionHandler(false);
-                }
+                    catch (Exception e) { completionHandler(false); }
+                } else { completionHandler(false); }
             });
         }
 
@@ -266,7 +260,6 @@ namespace myPortfolio.Models
                     string readerUsername = values.ElementAtOrDefault(USERNAME_INDEX).ToString();
 
                     completionHandler(new User(readerName, readerUsername));
-
                 }
             }
             catch (Exception e)
@@ -409,9 +402,9 @@ namespace myPortfolio.Models
         public static void LogIn(string username, string password, Action<bool> completionHandler)
         {
             // IF VALID CREDENTIALS
-            ValidCredentials(username, password, (bool isLoggedInState) => {
+            ValidCredentials(username, password, (bool isValid) => {
 
-                if (isLoggedInState)
+                if (isValid)
                 {
                     // RETURN USER WITH INFO
                     ReadUserByUsername(username, (User user) =>
@@ -421,7 +414,11 @@ namespace myPortfolio.Models
                     });
 
                     // ELSE RETURN FALSE
-                } else { completionHandler(false); }
+                } else 
+                {
+                    MessageBox.Show("Credentials are invalid. Please try again.");
+                    completionHandler(false); 
+                }
             });
         }
 
