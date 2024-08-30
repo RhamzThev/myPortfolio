@@ -1,10 +1,14 @@
 # myPortfolio
 
-An application used for storing and displaying user applications and software projects, built with WPF, XAML, C#, and PostgreSQL.
+[![Archived](https://img.shields.io/badge/status-archived-lightgrey.svg)](https://github.com/RhamzThev/myPortfolio)
+
+An application designed for storing and displaying user applications and software projects, built with WPF, XAML, C#, and PostgreSQL.
 
 ## Project Status
 
-This project is currently in development. Users can now sign up to create an account, as well as edit own profile information. If the user has administrative access, they can add games or external applications to this application.
+**This project is now archived and is no longer actively maintained.** 
+
+While the development phase included significant progress, such as user account creation and profile management features, no further updates or bug fixes will be applied to this repository. The code remains available for reference and educational purposes.
 
 ## Project Screen Shot(s)
 
@@ -17,18 +21,16 @@ This project is currently in development. Users can now sign up to create an acc
 
 ## Installation and Setup Instructions
 
-Since the project is in development, it is currently not possible to install and try this application from another machine. However, the code can be cloned then viewed from preferred IDE.
+Since the project has been archived, it is not recommended to attempt installation or setup on other machines. However, you can still clone the repository and explore the codebase using your preferred IDE.
 
 ## Reflection
 
-This is a personal project meant to gain experience with the .NET Framework. 
+This project served as a personal learning experience with the .NET Framework, particularly with WPF and XAML. Initially conceived as "RZ1 (RhamZtation)" to function as a glorified Steam application for managing personal game projects, it evolved into a more comprehensive digital portfolio application, aptly renamed "myPortfolio."
 
-This was originally named RZ1 (RhamZtation) meant to be a glorified Steam application, where it's possible to add my personal game projects to. Later on in deciding the requirements for this project, I've decided that I wanted to make this application more like a digital protfolio application, hence naming it "myPortfolio." 
+The development process involved significant trial and error, particularly in selecting the appropriate framework. After experimenting with C++ and Qt, as well as Java and JavaFX, I ultimately decided to use C# and WPF. Though I was familiar with Java, learning C# was relatively straightforward. XAML, with its similarities to HTML, also proved manageable.
 
-Deciding an environment was no 'one and done' task. A lot of trial and error came from choosing a framework to stick with. I've tried C++ with Qt, and Java with JavaFX, but I stuck with C# with WPF for now.
+One of the most significant challenges was adapting to the MVVM (Model-View-ViewModel) architectural pattern, which was new to me. While I had prior experience with the MVC (Model-View-Controller) pattern, understanding the distinction between ViewModel and Controller required some adjustment. Nevertheless, I gained a solid understanding of MVVM through this project.
 
-C# and XAML was languages I wasn't too familiar with. My strongest language is Java, so learning C# wasn't too much of a learning curve. With XAML and its similarities to HTML, I haven't had too many issues learning about that markup language.
+The application was developed using Visual Studio, with XAML as the markup language and C# as the programming language. Various NuGet packages were utilized for tasks such as image/icon management and PostgreSQL database connectivity. Although there were plans to migrate the database from PostgreSQL to SQL Server and complete additional features, the project has been archived before these changes could be implemented.
 
-The biggest, and possibly my most unexpected, learning curve was to learn a completely new architechtural style that is most suitable for WPF applications, MVVM. I've had experience developing applications within a MVC framework, so I had some crutch. However, distinguishing the difference between a ViewModel and Controller took some time, but now I have a strong idea on their distinction.
-
-Currently, the application is being developed in Visual Studio, using XAML as the markup language, C# as the programming language, with various NuGet extensions to be easily access images/icons, and to connect to an external PostgreSQL database with all the user and app information. When I continue devloping this application, I hope to migrate the database from PostgreSQL to SQL Server so the application can solely be .NET oriented, and finish designing the features of other portions of the project.
+Thank you for taking the time to explore myPortfolio. While active development has ceased, the lessons learned during its creation will inform future projects.
